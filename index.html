@@ -30,34 +30,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS CDN with config -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            nc: {
-              50: '#f0f8fd',
-              100: '#e0f1fb',
-              200: '#b9e2f6',
-              300: '#7dccf0',
-              400: '#38b0e6',
-              500: '#0082c9', // Nextcloud Blue
-              600: '#006fa8',
-              700: '#005988',
-              800: '#034a71',
-              900: '#083e5e',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'Roboto', 'system-ui', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Precompiled Production Tailwind CSS -->
+  <link rel="stylesheet" href="assets/css/tailwind.min.css">
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="assets/css/style.css">
