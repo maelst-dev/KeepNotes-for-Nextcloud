@@ -26,6 +26,10 @@ const translations = {
     heroSubtitle: "Мгновенная работа с заметками, интерактивные чек-листы, надёжный Offline-First и двусторонняя синхронизация с вашим облаком Nextcloud.",
     downloadApk: "Скачать APK",
     downloadFdroid: "Доступно в F-Droid",
+    fdroidComingSoon: "Скоро",
+    ctaFdroidSoon: "F-Droid — Скоро",
+    footerFdroid: "F-Droid Каталог",
+    soonBadge: "Скоро",
     viewOnGithub: "Исходный код",
     heroMockupAlt: "Главный экран KeepNotes for Nextcloud",
 
@@ -94,7 +98,7 @@ const translations = {
     step1Desc: "В веб-интерфейсе вашего сервера Nextcloud перейдите в «Приложения» и включите официальное приложение «Notes».",
     step2Num: "02",
     step2Title: "Установите KeepNotes",
-    step2Desc: "Скачайте актуальный APK-файл со страницы релизов GitHub или установите приложение через каталог F-Droid.",
+    step2Desc: "Скачайте актуальный APK-файл со страницы релизов GitHub (релиз в каталоге F-Droid готовится к публикации).",
     step3Num: "03",
     step3Title: "Войдите в 1 клик",
     step3Desc: "Откройте приложение, введите адрес вашего облака и подтвердите авторизацию в браузере через Nextcloud Login Flow v2.",
@@ -125,7 +129,7 @@ const translations = {
     faqA3: "Категорически нет. У разработчиков приложения нет серверов для сбора данных. Приложение общается исключительно между вашим устройством и вашим сервером Nextcloud. Используется современный протокол Login Flow v2, при котором приложению передаётся только уникальный защищённый токен сессии.",
 
     faqQ4: "Можно ли пользоваться приложением без сервисов Google Play?",
-    faqA4: "Да, абсолютно. В KeepNotes нет ни одной проприетарной библиотеки Google. Приложение доступно в каталоге свободного ПО F-Droid, а также распространяется в виде прямых APK-файлов на GitHub Releases. Оно отлично работает на дегуглифицированных прошивках (LineageOS, GrapheneOS, /e/OS и др.).",
+    faqA4: "Да, абсолютно. В KeepNotes нет ни одной проприетарной библиотеки Google. Приложение распространяется в виде прямых APK-файлов на GitHub Releases, а также готовится к публикации в каталоге свободного ПО F-Droid. Оно отлично работает на дегуглифицированных прошивках (LineageOS, GrapheneOS, /e/OS и др.).",
 
     faqQ5: "Какие версии Android поддерживаются?",
     faqA5: "KeepNotes поддерживает Android версии 8.0 (Oreo) и новее, включая актуальные версии Android 14 и Android 15, сохраняя высокую скорость работы даже на бюджетных устройствах.",
@@ -137,7 +141,7 @@ const translations = {
     ctaHeading: "Готовы навести порядок в заметках?",
     ctaSubheading: "Скачайте KeepNotes for Nextcloud прямо сейчас — свободно, бесплатно и без ограничений.",
     ctaDownloadApk: "Скачать APK (GitHub)",
-    ctaFdroid: "Установить из F-Droid",
+    ctaFdroid: "F-Droid — Скоро",
 
     // Footer
     footerDesc: "Современный, быстрый и открытый Android-клиент для Nextcloud Notes с интерфейсом в стиле Google Keep.",
@@ -199,6 +203,10 @@ const translations = {
     heroSubtitle: "Instant note-taking, interactive checklists, robust Offline-First architecture, and seamless two-way synchronization with your Nextcloud instance.",
     downloadApk: "Download APK",
     downloadFdroid: "Available on F-Droid",
+    fdroidComingSoon: "Coming Soon",
+    ctaFdroidSoon: "F-Droid — Coming Soon",
+    footerFdroid: "F-Droid Catalog",
+    soonBadge: "Soon",
     viewOnGithub: "Source Code",
     heroMockupAlt: "KeepNotes for Nextcloud main screen",
 
@@ -267,7 +275,7 @@ const translations = {
     step1Desc: "In your Nextcloud web dashboard, go to 'Apps' and enable the official 'Notes' app.",
     step2Num: "02",
     step2Title: "Install KeepNotes",
-    step2Desc: "Download the latest APK from GitHub Releases or install the application via the F-Droid client.",
+    step2Desc: "Download the latest APK directly from GitHub Releases (F-Droid release is coming soon).",
     step3Num: "03",
     step3Title: "Log in with 1 Click",
     step3Desc: "Open KeepNotes, provide your Nextcloud instance address, and approve access in your browser via Login Flow v2.",
@@ -298,7 +306,7 @@ const translations = {
     faqA3: "Definitely not. The developers do not operate any backend servers. All communication happens strictly between your smartphone and your personal Nextcloud instance. Nextcloud Login Flow v2 issues a secure session token without exposing your password.",
 
     faqQ4: "Can I use KeepNotes without Google Play Services?",
-    faqA4: "Yes, completely! KeepNotes is 100% Free and Open Source Software (FOSS). It contains no proprietary Google libraries and is available on F-Droid as well as direct GitHub Release APKs. It runs flawlessly on de-Googled ROMs (LineageOS, GrapheneOS, /e/OS, etc.).",
+    faqA4: "Yes, completely! KeepNotes is 100% Free and Open Source Software (FOSS). It contains no proprietary Google libraries and is available as direct GitHub Release APKs (and soon in the F-Droid catalog). It runs flawlessly on de-Googled ROMs (LineageOS, GrapheneOS, /e/OS, etc.).",
 
     faqQ5: "Which Android versions are supported?",
     faqA5: "KeepNotes supports Android 8.0 (Oreo) and above, fully optimized for Android 14 and Android 15 while maintaining snappy performance on all devices.",
@@ -310,7 +318,7 @@ const translations = {
     ctaHeading: "Ready to organize your notes with ease?",
     ctaSubheading: "Download KeepNotes for Nextcloud today — free, open source, and built for privacy.",
     ctaDownloadApk: "Download APK (GitHub)",
-    ctaFdroid: "Install from F-Droid",
+    ctaFdroid: "F-Droid — Coming Soon",
 
     // Footer
     footerDesc: "Modern, snappy, open-source Android client for Nextcloud Notes with Google Keep-inspired aesthetics.",

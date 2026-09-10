@@ -216,10 +216,14 @@
                 <span data-i18n="downloadApk">Скачать APK</span>
               </a>
 
-              <!-- F-Droid Button Badge -->
-              <a href="https://f-droid.org" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-white font-semibold text-base shadow-sm transition-all duration-200 transform hover:-translate-y-0.5">
-                <img src="assets/images/badges/fdroid-badge.svg" alt="F-Droid" class="h-8 w-auto">
-              </a>
+              <!-- F-Droid Button Badge (Coming Soon) -->
+              <div class="inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 select-none cursor-default font-medium text-sm shadow-sm" title="F-Droid: Скоро / Coming Soon">
+                <img src="assets/images/badges/fdroid-badge.svg" alt="F-Droid" class="h-6 w-auto opacity-75">
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300/60 dark:border-amber-700/50">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                  <span data-i18n="fdroidComingSoon">Скоро</span>
+                </span>
+              </div>
 
               <!-- GitHub Badge -->
               <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold transition">
@@ -523,8 +527,8 @@
             <div class="w-14 h-14 rounded-2xl bg-nc-500/10 text-nc-600 dark:text-nc-400 font-extrabold text-2xl flex items-center justify-center mb-6">
               <span data-i18n="step2Num">02</span>
             </div>
-            <h3 data-i18n="step2Title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">Установите KeepNotes</h3>
-            <p data-i18n="step2Desc" class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Скачайте актуальный APK-файл со страницы релизов GitHub или установите приложение через каталог F-Droid.</p>
+            <h3 data-i18n="step2Title" class="text-xl font-bold text-slate-900 dark:text-white mb-2">Установите KeepNotes</h3>
+            <p data-i18n="step2Desc" class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Скачайте актуальный APK-файл со страницы релизов GitHub (релиз в каталоге F-Droid готовится к публикации).</p>
           </div>
 
           <!-- Step 3 -->
@@ -703,7 +707,7 @@
               </svg>
             </button>
             <div class="faq-content px-6">
-              <p data-i18n="faqA4" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">Да, абсолютно. В KeepNotes нет ни одной проприетарной библиотеки Google. Приложение доступно в каталоге свободного ПО F-Droid, а также распространяется в виде прямых APK-файлов на GitHub Releases. Оно отлично работает на дегуглифицированных прошивках (LineageOS, GrapheneOS, /e/OS и др.).</p>
+              <p data-i18n="faqA4" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">Да, абсолютно. В KeepNotes нет ни одной проприетарной библиотеки Google. Приложение распространяется в виде прямых APK-файлов на GitHub Releases, а также готовится к публикации в каталоге свободного ПО F-Droid. Оно отлично работает на дегуглифицированных прошивках (LineageOS, GrapheneOS, /e/OS и др.).</p>
             </div>
           </div>
 
@@ -758,9 +762,10 @@
                 <span data-i18n="ctaDownloadApk">Скачать APK (GitHub)</span>
               </a>
 
-              <a href="https://f-droid.org" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold border border-white/20 shadow-lg transition transform hover:-translate-y-0.5">
-                <span data-i18n="ctaFdroid">Установить из F-Droid</span>
-              </a>
+              <div class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white/10 text-white/80 border border-dashed border-white/25 select-none cursor-default font-semibold text-sm sm:text-base">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span data-i18n="ctaFdroidSoon">F-Droid — Скоро</span>
+              </div>
             </div>
           </div>
         </div>
@@ -809,7 +814,12 @@
             <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" data-i18n="footerSourceCode" class="hover:text-nc-500 transition">Исходный код (GitHub)</a></li>
             <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/releases" target="_blank" rel="noopener noreferrer" data-i18n="footerReleases" class="hover:text-nc-500 transition">Релизы и сборки</a></li>
             <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerIssues" class="hover:text-nc-500 transition">Сообщить об ошибке</a></li>
-            <li><a href="https://f-droid.org" target="_blank" rel="noopener noreferrer" class="hover:text-nc-500 transition">F-Droid Каталог</a></li>
+            <li>
+              <span class="inline-flex items-center gap-1.5 text-slate-400 dark:text-slate-500 cursor-default">
+                <span data-i18n="footerFdroid">F-Droid Каталог</span>
+                <span class="text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300" data-i18n="soonBadge">Скоро</span>
+              </span>
+            </li>
           </ul>
         </div>
 
