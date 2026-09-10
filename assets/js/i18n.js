@@ -88,6 +88,7 @@ const translations = {
     screenshot5Desc: "Быстрая сортировка заметок по проектам, темам и тегам.",
     screenshot6Title: "Гибкие настройки",
     screenshot6Desc: "Выбор темы оформления, настройка размера шрифта и биометрический замок.",
+    lightboxHint: "Совет: используйте стрелки на клавиатуре (← / →) или свайпы на смартфоне для переключения.",
 
     // How to start (3 steps)
     howToHeadingPre: "Быстрый старт",
@@ -275,6 +276,7 @@ const translations = {
     screenshot5Desc: "Organize notes cleanly into projects, topics, and custom categories.",
     screenshot6Title: "Flexible Settings",
     screenshot6Desc: "Theme toggles, independent font scaling, and biometric app lock.",
+    lightboxHint: "Tip: Use keyboard arrow keys (← / →) or swipe gestures to navigate screenshots.",
 
     // How to start (3 steps)
     howToHeadingPre: "Quick Start",
