@@ -114,6 +114,16 @@ const translations = {
     secBiometricTitle: "Локальный сейф",
     secBiometricDesc: "Чувствительные учетные данные хранятся в защищённом хранилище Android EncryptedSharedPreferences и закрыты биометрией.",
 
+    // Architecture Diagram
+    archSchemaBadge: "Архитектурная схема взаимодействия",
+    archPhoneTitle: "Ваш смартфон",
+    archPhoneSub: "KeepNotes + Room DB",
+    archHttpsBadge: "Прямой HTTPS",
+    archZeroRelay: "Zero-Relay",
+    archServerTitle: "Ваш Nextcloud",
+    archServerSub: "Notes API (v1/v2)",
+    archFooter: "🔒 Полная изоляция от любых сторонних серверов, облаков и аналитики.",
+
     // FAQ Section
     faqHeadingPre: "Вопросы и ответы",
     faqHeading: "Часто задаваемые вопросы",
@@ -290,6 +300,16 @@ const translations = {
     secNoTrackDesc: "No Firebase, Google Analytics, Sentry, or third-party advertising SDKs. Not a single byte of telemetry ever leaves your phone.",
     secBiometricTitle: "Local Device Vault",
     secBiometricDesc: "Sensitive session tokens are stored securely in Android EncryptedSharedPreferences, guarded by biometric lock.",
+
+    // Architecture Diagram
+    archSchemaBadge: "Architecture Interaction Flow",
+    archPhoneTitle: "Your Smartphone",
+    archPhoneSub: "KeepNotes + Room DB",
+    archHttpsBadge: "Direct HTTPS",
+    archZeroRelay: "Zero-Relay",
+    archServerTitle: "Your Nextcloud",
+    archServerSub: "Notes API (v1/v2)",
+    archFooter: "🔒 Complete isolation from any third-party servers, clouds, and telemetry.",
 
     // FAQ Section
     faqHeadingPre: "FAQ",
