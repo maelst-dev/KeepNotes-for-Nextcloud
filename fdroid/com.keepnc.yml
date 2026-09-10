@@ -1,7 +1,9 @@
 Categories:
   - Note
 License: Apache-2.0
-WebSite: https://github.com/maelst-dev/KeepNotes-for-Nextcloud
+AuthorName: maelst-dev
+AuthorWebSite: https://github.com/maelst-dev
+WebSite: https://keepnotes.maelst.ru/
 SourceCode: https://github.com/maelst-dev/KeepNotes-for-Nextcloud
 IssueTracker: https://github.com/maelst-dev/KeepNotes-for-Nextcloud/issues
 
@@ -11,13 +13,6 @@ RepoType: git
 Repo: https://github.com/maelst-dev/KeepNotes-for-Nextcloud.git
 
 Builds:
-  - versionName: 1.1.0
-    versionCode: 2
-    commit: 55b06e63f0bed853b75dd222ed662f5fefa25bcb
-    subdir: app
-    gradle:
-      - yes
-
   - versionName: 1.1.1
     versionCode: 3
     commit: 058d64775b165c4410fa73cb9a79a3d13e084e88
