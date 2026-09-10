@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-page="privacy">Политика конфиденциальности — KeepNotes for Nextcloud</title>
+  <meta name="description" content="Политика конфиденциальности Android-приложения KeepNotes for Nextcloud. 100% FOSS, без трекеров, рекламы и передачи данных третьим лицам.">
+  <meta name="author" content="KeepNotes Contributors">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Политика конфиденциальности — KeepNotes for Nextcloud">
+  <meta property="og:description" content="100% FOSS, без трекеров, рекламы и передачи данных третьим лицам.">
+  <meta property="og:image" content="assets/images/icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/images/icon.png">
+
+  <!-- Fonts: Inter / Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN with config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nc: {
+              50: '#f0f8fd',
+              100: '#e0f1fb',
+              200: '#b9e2f6',
+              300: '#7dccf0',
+              400: '#38b0e6',
+              500: '#0082c9',
+              600: '#006fa8',
+              700: '#005988',
+              800: '#034a71',
+              900: '#083e5e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Roboto', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-300 selection:bg-nc-500 selection:text-white flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-nav border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Back link / Logo -->
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img src="assets/images/icon-round.png" alt="KeepNotes Logo" class="w-8 h-8 rounded-lg shadow-sm">
+          <span class="font-bold text-slate-900 dark:text-white text-base">KeepNotes</span>
+        </a>
+
+        <!-- Controls (Language, Theme) -->
+        <div class="flex items-center space-x-3">
+          <a href="index.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-nc-500 mr-2 transition">
+            <span data-i18n="privacyBackToHome">← Вернуться на главную</span>
+          </a>
+
+          <!-- Language Toggle Button -->
+          <button type="button" class="lang-toggle-btn inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Switch Language / Сменить язык" aria-label="Toggle language">
+            <svg class="w-3.5 h-3.5 text-nc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+            <span class="lang-current-label text-slate-700 dark:text-slate-200">RU</span>
+          </button>
+
+          <!-- Theme Toggle Button -->
+          <button type="button" class="theme-toggle-btn p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Toggle Theme" aria-label="Toggle theme">
+            <svg class="theme-sun-icon w-4 h-4 hidden text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg class="theme-moon-icon w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Privacy Content -->
+  <main class="flex-grow py-12 sm:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Back Button Mobile -->
+      <div class="mb-6 sm:hidden">
+        <a href="index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-nc-500 hover:underline">
+          <span data-i18n="privacyBackToHome">← Вернуться на главную</span>
+        </a>
+      </div>
+
+      <!-- Header Card -->
+      <div class="mb-10 text-center sm:text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 mb-4">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span>Privacy by Design • 100% FOSS</span>
+        </div>
+        <h1 data-i18n="privacyTitle" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Политика конфиденциальности KeepNotes for Nextcloud</h1>
+        <p data-i18n="privacyLastUpdated" class="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">Последнее обновление: 10 сентября 2026 г.</p>
+      </div>
+
+      <!-- Main Text Body Card -->
+      <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-8 leading-relaxed">
+        
+        <p data-i18n="privacyIntro" class="text-base sm:text-lg font-medium text-slate-700 dark:text-slate-300 border-b border-slate-200 dark:border-slate-800 pb-6">
+          Мы уважаем ваше право на конфиденциальность. KeepNotes for Nextcloud создавался с фундаментальным принципом: ваши данные принадлежат исключительно вам.
+        </p>
+
+        <!-- Section 1 -->
+        <div>
+          <h2 data-i18n="privacySec1Title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">1. Сбор и передача данных</h2>
+          <p data-i18n="privacySec1Text" class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            Приложение KeepNotes for Nextcloud НЕ собирает, НЕ хранит и НЕ передаёт персональные данные, идентификаторы устройств или аналитику третьим лицам или разработчикам приложения. У нас нет собственных серверов, баз данных или аналитических сервисов.
+          </p>
+        </div>
+
+        <!-- Section 2 -->
+        <div>
+          <h2 data-i18n="privacySec2Title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">2. Связь с сервером Nextcloud</h2>
+          <p data-i18n="privacySec2Text" class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            Приложение взаимодействует исключительно и напрямую с сервером Nextcloud, адрес которого вы указываете при авторизации. Все операции чтения, создания и редактирования заметок передаются по защищённому протоколу HTTPS непосредственно на ваш сервер.
+          </p>
+        </div>
+
+        <!-- Section 3 -->
+        <div>
+          <h2 data-i18n="privacySec3Title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">3. Учётные данные и токены</h2>
+          <p data-i18n="privacySec3Text" class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            Авторизация осуществляется через официальный механизм Nextcloud Login Flow v2. Приложение не видит и не сохраняет ваш мастер-пароль. Созданный токен доступа хранится локально на устройстве в защищённом хранилище Android Keystore / EncryptedSharedPreferences.
+          </p>
+        </div>
+
+        <!-- Section 4 -->
+        <div>
+          <h2 data-i18n="privacySec4Title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">4. Биометрическая аутентификация</h2>
+          <p data-i18n="privacySec4Text" class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            Функция биометрической защиты (отпечаток пальца, сканирование лица) использует стандартный системный Android BiometricPrompt API. Приложение не имеет прямого доступа к биометрическим данным — проверка выполняется аппаратно операционной системой устройства.
+          </p>
+        </div>
+
+        <!-- Section 5 -->
+        <div>
+          <h2 data-i18n="privacySec5Title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">5. Отсутствие сторонних трекеров и библиотек</h2>
+          <p data-i18n="privacySec5Text" class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            В приложении отсутствуют сторонние рекламные сети, трекеры и сервисы телеметрии (включая Google Play Services, Firebase, Sentry, Yandex AppMetrica и др.). Код приложения полностью открыт и может быть проверен любым желающим в публичном репозитории на GitHub.
+          </p>
+        </div>
+
+        <!-- Section 6 -->
+        <div>
+          <h2 data-i18n="privacySec6Title" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">6. Контакты</h2>
+          <p data-i18n="privacySec6Text" class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            Если у вас возникли вопросы по поводу политики конфиденциальности или работы приложения, вы можете создать тикет в официальном репозитории проекта на GitHub: <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/issues" target="_blank" rel="noopener noreferrer" class="text-nc-500 hover:underline break-all">https://github.com/maelst-dev/KeepNotes-for-Nextcloud/issues</a>.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 py-8 text-xs">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <img src="assets/images/icon-round.png" alt="KeepNotes Logo" class="w-6 h-6 rounded-md">
+        <span>© 2026 KeepNotes for Nextcloud. 100% Free & Open Source.</span>
+      </div>
+      <div>
+        <a href="index.html" class="text-nc-500 hover:underline" data-i18n="privacyBackToHome">← Вернуться на главную</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

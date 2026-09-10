@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 56" width="190" height="56" fill="none">
+  <rect width="190" height="56" rx="12" fill="#0F172A"/>
+  <rect x="1" y="1" width="188" height="54" rx="11" stroke="#334155" stroke-width="1.5"/>
+  
+  <!-- GitHub Octocat Icon -->
+  <g transform="translate(16, 12)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 0C7.16 0 0 7.16 0 16C0 23.08 4.58 29.06 10.94 31.18C11.74 31.32 12.04 30.84 12.04 30.42C12.04 30.04 12.02 28.78 12.02 27.44C7.58 28.4 6.64 25.5 6.64 25.5C5.92 23.66 4.88 23.16 4.88 23.16C3.42 22.18 4.98 22.2 4.98 22.2C6.58 22.32 7.44 23.84 7.44 23.84C8.88 26.3 11.2 25.6 12.12 25.18C12.26 24.14 12.68 23.44 13.14 23.04C9.58 22.64 5.84 21.26 5.84 15.12C5.84 13.38 6.46 11.94 7.48 10.82C7.32 10.42 6.76 8.78 7.64 6.58C7.64 6.58 8.98 6.16 12.02 8.22C13.3 7.86 14.66 7.68 16.02 7.68C17.38 7.68 18.74 7.86 20.02 8.22C23.06 6.16 24.4 6.58 24.4 6.58C25.28 8.78 24.72 10.42 24.56 10.82C25.58 11.94 26.2 13.38 26.2 15.12C26.2 21.28 22.44 22.64 18.88 23.04C19.44 23.54 19.96 24.5 19.96 26.02C19.96 28.2 19.94 29.96 19.94 30.42C19.94 30.84 20.24 31.34 21.04 31.18C27.42 29.06 32 23.06 32 16C32 7.16 24.84 0 16 0Z" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Text -->
+  <text x="56" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#94A3B8" letter-spacing="0.8">DOWNLOAD ON</text>
+  <text x="56" y="39" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF" letter-spacing="0.2">GitHub APK</text>
+</svg>

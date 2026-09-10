@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-page="home">KeepNotes for Nextcloud — Android-клиент в стиле Google Keep</title>
+  <meta name="description" content="Современный и быстрый Android-клиент для Nextcloud Notes с интерфейсом в стиле Google Keep. Полноценный Offline-First, Material 3, двусторонняя синхронизация, интерактивные чек-листы и биометрия.">
+  <meta name="keywords" content="Nextcloud Notes, KeepNotes, Google Keep alternative, FOSS Android, Nextcloud client, Offline-first, Markdown notes, Private notes">
+  <meta name="author" content="KeepNotes Contributors">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://keepnotes.local/">
+  <meta property="og:title" content="KeepNotes for Nextcloud — Android-клиент в стиле Google Keep">
+  <meta property="og:description" content="Клиент Nextcloud Notes с интерфейсом в стиле Google Keep. Надёжный Offline-First, интерактивные чек-листы, двусторонняя синхронизация и 100% приватность.">
+  <meta property="og:image" content="assets/images/icon.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="KeepNotes for Nextcloud — Android-клиент в стиле Google Keep">
+  <meta property="twitter:description" content="Клиент Nextcloud Notes с интерфейсом в стиле Google Keep. Быстрый Offline-First и двусторонняя синхронизация.">
+  <meta property="twitter:image" content="assets/images/icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="assets/images/icon.png">
+
+  <!-- Fonts: Inter / Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN with config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            nc: {
+              50: '#f0f8fd',
+              100: '#e0f1fb',
+              200: '#b9e2f6',
+              300: '#7dccf0',
+              400: '#38b0e6',
+              500: '#0082c9', // Nextcloud Blue
+              600: '#006fa8',
+              700: '#005988',
+              800: '#034a71',
+              900: '#083e5e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'Roboto', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-300 selection:bg-nc-500 selection:text-white">
+
+  <!-- Header / Navigation -->
+  <header id="site-navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 glass-nav border-b border-transparent">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-nc-500 rounded-xl p-1">
+          <img src="assets/images/icon-round.png" alt="KeepNotes Logo" class="w-10 h-10 rounded-xl shadow-md transition-transform duration-300 group-hover:scale-105">
+          <div class="flex flex-col">
+            <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white leading-tight">KeepNotes</span>
+            <span class="text-xs font-medium text-nc-500 dark:text-nc-400">for Nextcloud</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+          <a href="#features" data-i18n="navFeatures" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition">Возможности</a>
+          <a href="#screenshots" data-i18n="navScreenshots" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition">Скриншоты</a>
+          <a href="#howto" data-i18n="navHowTo" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition">Как начать</a>
+          <a href="#security" data-i18n="navSecurity" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition">Безопасность</a>
+          <a href="#faq" data-i18n="navFaq" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800 transition">FAQ</a>
+        </nav>
+
+        <!-- Action Controls (Language, Theme, GitHub) -->
+        <div class="hidden sm:flex items-center space-x-2.5">
+          <!-- Language Toggle Button -->
+          <button type="button" class="lang-toggle-btn inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Switch Language / Сменить язык" aria-label="Toggle language">
+            <svg class="w-3.5 h-3.5 text-nc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+            <span class="lang-current-label text-slate-700 dark:text-slate-200">RU</span>
+          </button>
+
+          <!-- Theme Toggle Button -->
+          <button type="button" class="theme-toggle-btn p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Toggle Theme" aria-label="Toggle theme">
+            <!-- Sun icon -->
+            <svg class="theme-sun-icon w-4 h-4 hidden text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <!-- Moon icon -->
+            <svg class="theme-moon-icon w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+
+          <!-- GitHub Repo Link with Star icon -->
+          <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold hover:opacity-90 transition shadow-sm">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span data-i18n="starOnGithub">GitHub</span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <div class="flex items-center gap-2 sm:hidden">
+          <button type="button" class="lang-toggle-btn px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60">
+            <span class="lang-current-label">RU</span>
+          </button>
+          <button type="button" class="theme-toggle-btn p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60">
+            <svg class="theme-sun-icon w-4 h-4 hidden text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg class="theme-moon-icon w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          </button>
+          <button id="mobile-menu-btn" type="button" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none" aria-label="Open menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Backdrop -->
+  <div id="mobile-menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu-drawer" class="fixed inset-y-0 right-0 max-w-xs w-full bg-white dark:bg-slate-900 p-6 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between pb-6 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+          <img src="assets/images/icon-round.png" alt="KeepNotes" class="w-8 h-8 rounded-lg">
+          <span class="font-bold text-slate-900 dark:text-white">KeepNotes</span>
+        </div>
+        <button id="mobile-menu-close" type="button" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="mt-6 flex flex-col space-y-3">
+        <a href="#features" data-i18n="navFeatures" class="mobile-nav-link px-3 py-2 rounded-lg font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Возможности</a>
+        <a href="#screenshots" data-i18n="navScreenshots" class="mobile-nav-link px-3 py-2 rounded-lg font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Скриншоты</a>
+        <a href="#howto" data-i18n="navHowTo" class="mobile-nav-link px-3 py-2 rounded-lg font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Как начать</a>
+        <a href="#security" data-i18n="navSecurity" class="mobile-nav-link px-3 py-2 rounded-lg font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Безопасность</a>
+        <a href="#faq" data-i18n="navFaq" class="mobile-nav-link px-3 py-2 rounded-lg font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">FAQ</a>
+        <a href="privacy.html" data-i18n="footerPrivacyPolicy" class="mobile-nav-link px-3 py-2 rounded-lg font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Политика конфиденциальности</a>
+      </nav>
+    </div>
+
+    <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
+      <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/releases/latest" target="_blank" rel="noopener noreferrer" class="w-full text-center py-2.5 px-4 rounded-xl bg-nc-500 text-white font-semibold shadow hover:bg-nc-600 transition">
+        <span data-i18n="downloadApk">Скачать APK</span>
+      </a>
+      <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" class="w-full text-center py-2.5 px-4 rounded-xl border border-slate-300 dark:border-slate-700 font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        GitHub
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+      <!-- Background subtle gradient blobs -->
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-nc-300/30 to-sky-400/20 dark:from-nc-700/20 dark:to-sky-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Hero Text Content -->
+          <div class="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
+            
+            <!-- Badge: 100% Free & Open Source -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-sky-100 text-nc-700 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-200 dark:border-sky-800/80 mb-6 shadow-sm">
+              <svg class="w-4 h-4 text-nc-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/>
+              </svg>
+              <span data-i18n="heroBadge">100% Free &amp; Open Source • Без рекламы и трекеров</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15] mb-6">
+              <span data-i18n="heroTitle">Клиент Nextcloud Notes с интерфейсом в стиле Google Keep</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p data-i18n="heroSubtitle" class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mb-8 leading-relaxed">
+              Мгновенная работа с заметками, интерактивные чек-листы, надёжный Offline-First и двусторонняя синхронизация с вашим облаком Nextcloud.
+            </p>
+
+            <!-- CTA Download Buttons -->
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10 w-full sm:w-auto">
+              <!-- APK Release Button -->
+              <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/releases/latest" target="_blank" rel="noopener noreferrer" class="group relative inline-flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-nc-500 hover:bg-nc-600 text-white font-semibold text-base shadow-lg shadow-nc-500/25 transition-all duration-200 transform hover:-translate-y-0.5">
+                <svg class="w-5 h-5 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span data-i18n="downloadApk">Скачать APK</span>
+              </a>
+
+              <!-- F-Droid Button Badge -->
+              <a href="https://f-droid.org" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-white font-semibold text-base shadow-sm transition-all duration-200 transform hover:-translate-y-0.5">
+                <img src="assets/images/badges/fdroid-badge.svg" alt="F-Droid" class="h-8 w-auto">
+              </a>
+
+              <!-- GitHub Badge -->
+              <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold transition">
+                <svg class="w-5 h-5 text-slate-900 dark:text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span data-i18n="viewOnGithub">Исходный код</span>
+              </a>
+            </div>
+
+            <!-- Stats / Highlights Pills -->
+            <div class="grid grid-cols-3 gap-3 sm:gap-6 pt-6 border-t border-slate-200 dark:border-slate-800/80 w-full">
+              <div class="text-center lg:text-left">
+                <div class="text-base sm:text-lg font-bold text-slate-900 dark:text-white" data-i18n="statsOffline">Offline-First</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="statsOfflineDesc">Локальная БД Room</div>
+              </div>
+              <div class="text-center lg:text-left">
+                <div class="text-base sm:text-lg font-bold text-slate-900 dark:text-white" data-i18n="statsSync">2-Way Sync</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="statsSyncDesc">По etag и меткам</div>
+              </div>
+              <div class="text-center lg:text-left">
+                <div class="text-base sm:text-lg font-bold text-slate-900 dark:text-white" data-i18n="statsPrivacy">0 трекеров</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="statsPrivacyDesc">Полная приватность</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Hero Phone Mockup -->
+          <div class="lg:col-span-5 flex justify-center items-center relative">
+            <!-- Glow background behind phone -->
+            <div class="absolute inset-0 max-w-sm mx-auto bg-nc-500/20 rounded-full blur-2xl transform scale-95 pointer-events-none"></div>
+
+            <div class="phone-mockup max-w-[310px] sm:max-w-[330px] w-full cursor-pointer gallery-trigger" data-index="0" title="Нажмите для увеличения">
+              <!-- Top camera notch -->
+              <div class="phone-camera-punch"></div>
+
+              <!-- Phone Screen -->
+              <div class="relative aspect-[9/19.5] bg-slate-100 dark:bg-slate-900 overflow-hidden">
+                <img id="hero-mockup-img" src="assets/images/screenshots/ru/01_Notes.png" alt="KeepNotes for Nextcloud" data-i18n-alt="heroMockupAlt" class="w-full h-full object-cover select-none">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY FEATURES SECTION -->
+    <section id="features" class="py-20 lg:py-32 bg-white dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+          <span data-i18n="featuresHeadingPre" class="text-xs sm:text-sm font-bold tracking-wider text-nc-500 dark:text-nc-400 uppercase">Функционал приложения</span>
+          <h2 data-i18n="featuresHeading" class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Всё необходимое для ваших заметок</h2>
+          <p data-i18n="featuresSubheading" class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400">Создано с упором на приватность данных, скорость работы и удобство интерфейса</p>
+        </div>
+
+        <!-- Features Grid (8 Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Card 1: Google Keep UI -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-nc-100 dark:bg-nc-950/80 text-nc-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature1Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Интерфейс Google Keep</h3>
+            <p data-i18n="feature1Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Адаптивная сетка карточек (Staggered Grid), поддержка Material Design 3, динамические цвета и светлая/тёмная темы.</p>
+          </div>
+
+          <!-- Card 2: Offline-First -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/80 text-amber-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature2Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Полноценный Offline-First</h3>
+            <p data-i18n="feature2Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Локальная база данных Room выступает единым источником правды. Мгновенное сохранение и доступ к заметкам без ожидания сети.</p>
+          </div>
+
+          <!-- Card 3: 2-Way Sync -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature3Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Двусторонняя синхронизация</h3>
+            <p data-i18n="feature3Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Автоматическая синхронизация с сервером по etag и временным меткам с визуальной индикацией прогресса и статуса.</p>
+          </div>
+
+          <!-- Card 4: Markdown & Checklists -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950/80 text-indigo-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature4Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Markdown и чек-листы</h3>
+            <p data-i18n="feature4Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Крупные чекбоксы с зачёркиванием, умный переход на новую строку по Enter и быстрая конвертация текста в чек-лист.</p>
+          </div>
+
+          <!-- Card 5: Biometric Lock -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-950/80 text-rose-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature5Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Биометрическая защита</h3>
+            <p data-i18n="feature5Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Защитите личные записи: надёжная блокировка приложения по отпечатку пальца, скану лица или системному PIN-коду устройства.</p>
+          </div>
+
+          <!-- Card 6: Login Flow v2 -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-950/80 text-sky-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature6Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Бесшовный вход (Flow v2)</h3>
+            <p data-i18n="feature6Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Вход в 1 клик через браузер: не нужно вручную копировать URL сервера и генерировать сложные пароли приложений.</p>
+          </div>
+
+          <!-- Card 7: 100% Privacy -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-950/80 text-teal-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature7Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">100% Приватность и FOSS</h3>
+            <p data-i18n="feature7Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Никаких Google Play Services, встроенной рекламы, телеметрии и аналитики. Ваши заметки принадлежат только вам.</p>
+          </div>
+
+          <!-- Card 8: Font sizing & categories -->
+          <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 hover:border-nc-500/50 transition-all duration-200 hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-500 flex items-center justify-center mb-5">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 data-i18n="feature8Title" class="text-lg font-bold text-slate-900 dark:text-white mb-2">Персонализация шрифтов</h3>
+            <p data-i18n="feature8Desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Независимый выбор масштаба шрифтов для карточек и редактора, удобная смена языка интерфейса и навигация по категориям.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCREENSHOTS GALLERY -->
+    <section id="screenshots" class="py-20 lg:py-32">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span data-i18n="screenshotsHeadingPre" class="text-xs sm:text-sm font-bold tracking-wider text-nc-500 dark:text-nc-400 uppercase">Галерея интерфейса</span>
+          <h2 data-i18n="screenshotsHeading" class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Продуманный до мелочей дизайн</h2>
+          <p data-i18n="screenshotsSubheading" class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400">Ознакомьтесь со скриншотами реальной работы приложения</p>
+          <div class="mt-2 inline-flex items-center gap-1.5 text-xs text-nc-600 dark:text-nc-400 bg-nc-50 dark:bg-nc-950/60 px-3 py-1 rounded-full border border-nc-200/50 dark:border-nc-800/50">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+            <span data-i18n="screenshotsHint">Нажмите на любой скриншот для полноэкранного просмотра</span>
+          </div>
+        </div>
+
+        <!-- Screenshots Grid (6 items) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- Screenshot 1 -->
+          <div class="screenshot-card group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm hover:shadow-xl border border-slate-200/80 dark:border-slate-800 gallery-trigger" data-index="0">
+            <div class="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 aspect-[9/19] flex items-center justify-center">
+              <img src="assets/images/screenshots/ru/01_Notes.png" data-filename="01_Notes.png" alt="Notes Overview" class="gallery-screenshot-img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+              <!-- Overlay hover zoom badge -->
+              <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="p-3 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg text-nc-500">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 px-2">
+              <h3 data-i18n="screenshot1Title" class="font-bold text-slate-900 dark:text-white text-base">Главный экран заметок</h3>
+              <p data-i18n="screenshot1Desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Адаптивная сетка карточек с интерактивными чекбоксами и быстрым поиском.</p>
+            </div>
+          </div>
+
+          <!-- Screenshot 2 -->
+          <div class="screenshot-card group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm hover:shadow-xl border border-slate-200/80 dark:border-slate-800 gallery-trigger" data-index="1">
+            <div class="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 aspect-[9/19] flex items-center justify-center">
+              <img src="assets/images/screenshots/ru/02_Checklist_preview.png" data-filename="02_Checklist_preview.png" alt="Checklist Preview" class="gallery-screenshot-img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+              <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="p-3 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg text-nc-500">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 px-2">
+              <h3 data-i18n="screenshot2Title" class="font-bold text-slate-900 dark:text-white text-base">Просмотр чек-листа</h3>
+              <p data-i18n="screenshot2Desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Удобное вычёркивание задач в один тап прямо с экрана просмотра.</p>
+            </div>
+          </div>
+
+          <!-- Screenshot 3 -->
+          <div class="screenshot-card group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm hover:shadow-xl border border-slate-200/80 dark:border-slate-800 gallery-trigger" data-index="2">
+            <div class="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 aspect-[9/19] flex items-center justify-center">
+              <img src="assets/images/screenshots/ru/03_Checklist_edit.png" data-filename="03_Checklist_edit.png" alt="Checklist Editor" class="gallery-screenshot-img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+              <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="p-3 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg text-nc-500">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 px-2">
+              <h3 data-i18n="screenshot3Title" class="font-bold text-slate-900 dark:text-white text-base">Редактор списков</h3>
+              <p data-i18n="screenshot3Desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Умное автодополнение пунктов по Enter и поддержка Markdown.</p>
+            </div>
+          </div>
+
+          <!-- Screenshot 4 -->
+          <div class="screenshot-card group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm hover:shadow-xl border border-slate-200/80 dark:border-slate-800 gallery-trigger" data-index="3">
+            <div class="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 aspect-[9/19] flex items-center justify-center">
+              <img src="assets/images/screenshots/ru/04_Make_Checklist.png" data-filename="04_Make_Checklist.png" alt="Make Checklist" class="gallery-screenshot-img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+              <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="p-3 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg text-nc-500">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 px-2">
+              <h3 data-i18n="screenshot4Title" class="font-bold text-slate-900 dark:text-white text-base">Конвертация в список</h3>
+              <p data-i18n="screenshot4Desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Превращение обычного текста в интерактивный чек-лист в один клик.</p>
+            </div>
+          </div>
+
+          <!-- Screenshot 5 -->
+          <div class="screenshot-card group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm hover:shadow-xl border border-slate-200/80 dark:border-slate-800 gallery-trigger" data-index="4">
+            <div class="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 aspect-[9/19] flex items-center justify-center">
+              <img src="assets/images/screenshots/ru/05_Create_Category.png" data-filename="05_Create_Category.png" alt="Create Category" class="gallery-screenshot-img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+              <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="p-3 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg text-nc-500">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 px-2">
+              <h3 data-i18n="screenshot5Title" class="font-bold text-slate-900 dark:text-white text-base">Управление категориями</h3>
+              <p data-i18n="screenshot5Desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Быстрая сортировка заметок по проектам, темам и тегам.</p>
+            </div>
+          </div>
+
+          <!-- Screenshot 6 -->
+          <div class="screenshot-card group cursor-pointer bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm hover:shadow-xl border border-slate-200/80 dark:border-slate-800 gallery-trigger" data-index="5">
+            <div class="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 aspect-[9/19] flex items-center justify-center">
+              <img src="assets/images/screenshots/ru/06_Settings.png" data-filename="06_Settings.png" alt="Settings" class="gallery-screenshot-img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+              <div class="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="p-3 bg-white/90 dark:bg-slate-900/90 rounded-full shadow-lg text-nc-500">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 px-2">
+              <h3 data-i18n="screenshot6Title" class="font-bold text-slate-900 dark:text-white text-base">Гибкие настройки</h3>
+              <p data-i18n="screenshot6Desc" class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Выбор темы оформления, настройка размера шрифта и биометрический замок.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- HOW TO START (3 Simple Steps) -->
+    <section id="howto" class="py-20 lg:py-32 bg-slate-100/70 dark:bg-slate-900/70 border-y border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span data-i18n="howToHeadingPre" class="text-xs sm:text-sm font-bold tracking-wider text-nc-500 dark:text-nc-400 uppercase">Быстрый старт</span>
+          <h2 data-i18n="howToHeading" class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Как начать пользоваться за 3 шага</h2>
+          <p data-i18n="howToSubheading" class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400">Простая настройка без сложных инструкций</p>
+        </div>
+
+        <!-- Steps Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          
+          <!-- Step 1 -->
+          <div class="relative bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700">
+            <div class="w-14 h-14 rounded-2xl bg-nc-500/10 text-nc-600 dark:text-nc-400 font-extrabold text-2xl flex items-center justify-center mb-6">
+              <span data-i18n="step1Num">01</span>
+            </div>
+            <h3 data-i18n="step1Title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">Включите Notes в Nextcloud</h3>
+            <p data-i18n="step1Desc" class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">В веб-интерфейсе вашего сервера Nextcloud перейдите в «Приложения» и включите официальное приложение «Notes».</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="relative bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700">
+            <div class="w-14 h-14 rounded-2xl bg-nc-500/10 text-nc-600 dark:text-nc-400 font-extrabold text-2xl flex items-center justify-center mb-6">
+              <span data-i18n="step2Num">02</span>
+            </div>
+            <h3 data-i18n="step2Title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">Установите KeepNotes</h3>
+            <p data-i18n="step2Desc" class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Скачайте актуальный APK-файл со страницы релизов GitHub или установите приложение через каталог F-Droid.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="relative bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700">
+            <div class="w-14 h-14 rounded-2xl bg-nc-500/10 text-nc-600 dark:text-nc-400 font-extrabold text-2xl flex items-center justify-center mb-6">
+              <span data-i18n="step3Num">03</span>
+            </div>
+            <h3 data-i18n="step3Title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">Войдите в 1 клик</h3>
+            <p data-i18n="step3Desc" class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Откройте приложение, введите адрес вашего облака и подтвердите авторизацию в браузере через Nextcloud Login Flow v2.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECURITY & TRUST SECTION -->
+    <section id="security" class="py-20 lg:py-32">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-6">
+            <span data-i18n="secHeadingPre" class="text-xs sm:text-sm font-bold tracking-wider text-nc-500 dark:text-nc-400 uppercase">Архитектура и доверие</span>
+            <h2 data-i18n="secHeading" class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Ваши данные под вашим полным контролем</h2>
+            <p data-i18n="secSubheading" class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-8">Прямая защищённая связь между смартфоном и вашим сервером без посредников</p>
+
+            <div class="space-y-6">
+              <div class="flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-nc-100 dark:bg-nc-950 text-nc-500 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 004 11a7.96 7.96 0 001.077 3.99"/></svg>
+                </div>
+                <div>
+                  <h3 data-i18n="secDirectTitle" class="font-bold text-slate-900 dark:text-white text-base">Прямое соединение</h3>
+                  <p data-i18n="secDirectDesc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">Приложение связывается напрямую только с указанным вами доменом Nextcloud по шифрованному протоколу HTTPS. Серверов-посредников не существует в принципе.</p>
+                </div>
+              </div>
+
+              <div class="flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-500 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                </div>
+                <div>
+                  <h3 data-i18n="secNoTrackTitle" class="font-bold text-slate-900 dark:text-white text-base">Без трекеров и аналитики</h3>
+                  <p data-i18n="secNoTrackDesc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">Никаких Firebase, Google Analytics, Sentry или Facebook SDK. Ни один байт телеметрии не покидает ваше устройство.</p>
+                </div>
+              </div>
+
+              <div class="flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-500 flex items-center justify-center">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <div>
+                  <h3 data-i18n="secBiometricTitle" class="font-bold text-slate-900 dark:text-white text-base">Локальный сейф</h3>
+                  <p data-i18n="secBiometricDesc" class="text-sm text-slate-600 dark:text-slate-400 mt-1">Чувствительные учетные данные хранятся в защищённом хранилище Android EncryptedSharedPreferences и закрыты биометрией.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Architecture Visual Diagram -->
+          <div class="lg:col-span-6 bg-slate-100 dark:bg-slate-800/80 rounded-3xl p-8 border border-slate-200 dark:border-slate-700">
+            <div class="text-center mb-6">
+              <span class="text-xs font-semibold uppercase tracking-wider text-nc-500">Архитектурная схема взаимодействия</span>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+              
+              <!-- Smartphone node -->
+              <div class="w-full md:w-5/12 bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 text-center">
+                <div class="w-12 h-12 mx-auto rounded-xl bg-nc-50 dark:bg-nc-950 text-nc-500 flex items-center justify-center mb-3">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <div class="font-bold text-sm text-slate-900 dark:text-white">Ваш смартфон</div>
+                <div class="text-xs text-slate-500 mt-1">KeepNotes + Room DB</div>
+              </div>
+
+              <!-- Connection arrow -->
+              <div class="flex flex-col items-center justify-center text-center">
+                <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800 mb-1">Прямой HTTPS</span>
+                <div class="hidden md:flex items-center text-nc-500">
+                  <svg class="w-16 h-6" fill="none" stroke="currentColor" viewBox="0 0 64 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke-dasharray="4 4" d="M4 12h52m0 0l-6-6m6 6l-6 6"/>
+                  </svg>
+                </div>
+                <div class="md:hidden flex items-center text-nc-500 my-2">
+                  <svg class="w-6 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 40">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke-dasharray="4 4" d="M12 4v28m0 0l-4-4m4 4l4-4"/>
+                  </svg>
+                </div>
+                <span class="text-[10px] text-slate-400">Zero-Relay</span>
+              </div>
+
+              <!-- Nextcloud Server node -->
+              <div class="w-full md:w-5/12 bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 text-center">
+                <div class="w-12 h-12 mx-auto rounded-xl bg-sky-50 dark:bg-sky-950 text-sky-500 flex items-center justify-center mb-3">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+                </div>
+                <div class="font-bold text-sm text-slate-900 dark:text-white">Ваш Nextcloud</div>
+                <div class="text-xs text-slate-500 mt-1">Notes API (v1/v2)</div>
+              </div>
+
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 text-center text-xs text-slate-500">
+              🔒 Полная изоляция от любых сторонних серверов, облаков и аналитики.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FAQ SECTION (Accordion) -->
+    <section id="faq" class="py-20 lg:py-32 bg-slate-100/70 dark:bg-slate-900/70 border-t border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span data-i18n="faqHeadingPre" class="text-xs sm:text-sm font-bold tracking-wider text-nc-500 dark:text-nc-400 uppercase">Вопросы и ответы</span>
+          <h2 data-i18n="faqHeading" class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">Часто задаваемые вопросы</h2>
+          <p data-i18n="faqSubheading" class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400">Ответы на популярные вопросы о работе приложения и безопасности</p>
+        </div>
+
+        <!-- Accordion Items -->
+        <div class="space-y-4">
+          
+          <!-- FAQ 1 -->
+          <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden transition-all">
+            <button type="button" class="faq-button w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faqQ1" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Нужен ли постоянный интернет для работы приложения?</span>
+              <svg class="faq-icon w-5 h-5 text-nc-500 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-content px-6">
+              <p data-i18n="faqA1" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">Нет! KeepNotes спроектирован по парадигме Offline-First. Локальная база Room является единым источником правды. Вы можете читать, создавать и редактировать любые заметки без подключения к сети. Как только появится интернет, приложение автоматически выполнит быструю двустороннюю синхронизацию.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden transition-all">
+            <button type="button" class="faq-button w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faqQ2" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Поддерживается ли тёмная тема оформления?</span>
+              <svg class="faq-icon w-5 h-5 text-nc-500 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-content px-6">
+              <p data-i18n="faqA2" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">Да. Приложение полностью поддерживает динамическую тему Material 3: вы можете выбрать автоматическую смену по системной теме Android или принудительно зафиксировать светлый или глубокий тёмный режим.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden transition-all">
+            <button type="button" class="faq-button w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faqQ3" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Хранятся ли мои пароли и заметки на ваших серверах?</span>
+              <svg class="faq-icon w-5 h-5 text-nc-500 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-content px-6">
+              <p data-i18n="faqA3" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">Категорически нет. У разработчиков приложения нет серверов для сбора данных. Приложение общается исключительно между вашим устройством и вашим сервером Nextcloud. Используется современный протокол Login Flow v2, при котором приложению передаётся только уникальный защищённый токен сессии.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden transition-all">
+            <button type="button" class="faq-button w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faqQ4" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Можно ли пользоваться приложением без сервисов Google Play?</span>
+              <svg class="faq-icon w-5 h-5 text-nc-500 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-content px-6">
+              <p data-i18n="faqA4" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">Да, абсолютно. В KeepNotes нет ни одной проприетарной библиотеки Google. Приложение доступно в каталоге свободного ПО F-Droid, а также распространяется в виде прямых APK-файлов на GitHub Releases. Оно отлично работает на дегуглифицированных прошивках (LineageOS, GrapheneOS, /e/OS и др.).</p>
+            </div>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden transition-all">
+            <button type="button" class="faq-button w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faqQ5" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Какие версии Android поддерживаются?</span>
+              <svg class="faq-icon w-5 h-5 text-nc-500 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-content px-6">
+              <p data-i18n="faqA5" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">KeepNotes поддерживает Android версии 8.0 (Oreo) и новее, включая актуальные версии Android 14 и Android 15, сохраняя высокую скорость работы даже на бюджетных устройствах.</p>
+            </div>
+          </div>
+
+          <!-- FAQ 6 -->
+          <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 overflow-hidden transition-all">
+            <button type="button" class="faq-button w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faqQ6" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg">Как включить поддержку заметок на сервере Nextcloud?</span>
+              <svg class="faq-icon w-5 h-5 text-nc-500 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div class="faq-content px-6">
+              <p data-i18n="faqA6" class="pb-5 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">В веб-интерфейсе Nextcloud администратору достаточно перейти в раздел «Приложения» (Apps), найти в каталоге официальное приложение «Notes» и нажать кнопку «Установить и включить». Никаких дополнительных настроек не требуется.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FINAL DOWNLOAD CTA BANNER -->
+    <section class="py-20 lg:py-24 relative overflow-hidden">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl bg-gradient-to-br from-nc-600 to-sky-700 text-white p-10 sm:p-14 overflow-hidden shadow-2xl">
+          <!-- Background decoration rings -->
+          <div class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-nc-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div class="relative z-10 text-center max-w-2xl mx-auto">
+            <h2 data-i18n="ctaHeading" class="text-3xl sm:text-4xl font-extrabold tracking-tight">Готовы навести порядок в заметках?</h2>
+            <p data-i18n="ctaSubheading" class="mt-4 text-base sm:text-lg text-sky-100">Скачайте KeepNotes for Nextcloud прямо сейчас — свободно, бесплатно и без ограничений.</p>
+
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/releases/latest" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-white text-slate-900 hover:bg-sky-50 font-bold shadow-lg transition transform hover:-translate-y-0.5">
+                <svg class="w-5 h-5 text-nc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span data-i18n="ctaDownloadApk">Скачать APK (GitHub)</span>
+              </a>
+
+              <a href="https://f-droid.org" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-900 text-white font-bold border border-white/20 shadow-lg transition transform hover:-translate-y-0.5">
+                <span data-i18n="ctaFdroid">Установить из F-Droid</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 py-12 lg:py-16 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+        
+        <!-- Col 1 & 2: Branding -->
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="assets/images/icon-round.png" alt="KeepNotes Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="font-bold text-slate-900 dark:text-white text-base">KeepNotes for Nextcloud</div>
+          </div>
+          <p data-i18n="footerDesc" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed mb-4">
+            Современный, быстрый и открытый Android-клиент для Nextcloud Notes с интерфейсом в стиле Google Keep.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition" aria-label="GitHub">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 3: Navigation -->
+        <div>
+          <h4 data-i18n="footerNavTitle" class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider mb-3">Навигация</h4>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li><a href="#features" data-i18n="navFeatures" class="hover:text-nc-500 transition">Возможности</a></li>
+            <li><a href="#screenshots" data-i18n="navScreenshots" class="hover:text-nc-500 transition">Скриншоты</a></li>
+            <li><a href="#howto" data-i18n="navHowTo" class="hover:text-nc-500 transition">Как начать</a></li>
+            <li><a href="#security" data-i18n="navSecurity" class="hover:text-nc-500 transition">Безопасность</a></li>
+            <li><a href="#faq" data-i18n="navFaq" class="hover:text-nc-500 transition">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Resources -->
+        <div>
+          <h4 data-i18n="footerResourcesTitle" class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider mb-3">Ресурсы</h4>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud" target="_blank" rel="noopener noreferrer" data-i18n="footerSourceCode" class="hover:text-nc-500 transition">Исходный код (GitHub)</a></li>
+            <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/releases" target="_blank" rel="noopener noreferrer" data-i18n="footerReleases" class="hover:text-nc-500 transition">Релизы и сборки</a></li>
+            <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/issues" target="_blank" rel="noopener noreferrer" data-i18n="footerIssues" class="hover:text-nc-500 transition">Сообщить об ошибке</a></li>
+            <li><a href="https://f-droid.org" target="_blank" rel="noopener noreferrer" class="hover:text-nc-500 transition">F-Droid Каталог</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 5: Legal -->
+        <div>
+          <h4 data-i18n="footerLegalTitle" class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider mb-3">Правовая информация</h4>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li><a href="privacy.html" data-i18n="footerPrivacyPolicy" class="hover:text-nc-500 transition">Политика конфиденциальности</a></li>
+            <li><a href="https://github.com/maelst-dev/KeepNotes-for-Nextcloud/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n="footerLicense" class="hover:text-nc-500 transition">Лицензия GPL-3.0</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Legal Disclaimer & Copyright -->
+      <div class="pt-8 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-400 dark:text-slate-500 space-y-2">
+        <p data-i18n="footerDisclaimer">Nextcloud является зарегистрированным товарным знаком Nextcloud GmbH. KeepNotes является независимым проектом с открытым исходным кодом и не аффилирован с Nextcloud GmbH.</p>
+        <p data-i18n="footerCopy">© 2026 KeepNotes for Nextcloud. Распространяется под свободной лицензией.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="screenshot-lightbox" class="lightbox-modal fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div id="lightbox-backdrop" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md"></div>
+
+    <!-- Modal Content Window -->
+    <div class="lightbox-content relative z-10 max-w-4xl w-full max-h-[92vh] flex flex-col md:flex-row bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-200/50 dark:border-slate-800">
+      
+      <!-- Close Button -->
+      <button id="lightbox-close" type="button" class="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white transition backdrop-blur-sm focus:outline-none" aria-label="Close dialog">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Screenshot Image Side -->
+      <div class="relative flex-1 bg-slate-100 dark:bg-slate-950 flex items-center justify-center p-4 sm:p-6 min-h-[350px] sm:min-h-[500px]">
+        <img id="lightbox-image" src="" alt="" class="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-xl object-contain">
+        
+        <!-- Navigation Buttons -->
+        <button id="lightbox-prev" type="button" class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 text-slate-800 dark:text-white shadow-lg backdrop-blur-sm transition focus:outline-none" aria-label="Previous screenshot">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+
+        <button id="lightbox-next" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 text-slate-800 dark:text-white shadow-lg backdrop-blur-sm transition focus:outline-none" aria-label="Next screenshot">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- Description Sidebar -->
+      <div class="w-full md:w-80 p-6 sm:p-8 flex flex-col justify-between border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-800">
+        <div>
+          <div class="flex items-center justify-between text-xs font-semibold text-nc-500 mb-3">
+            <span class="uppercase tracking-wider">KeepNotes UI</span>
+            <span id="lightbox-counter" class="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full text-slate-700 dark:text-slate-300">1 / 6</span>
+          </div>
+          <h3 id="lightbox-title" class="text-xl font-extrabold text-slate-900 dark:text-white mb-3"></h3>
+          <p id="lightbox-desc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"></p>
+        </div>
+
+        <div class="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-400">
+          Совет: используйте стрелки на клавиатуре (← / →) или свайпы на смартфоне для переключения.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BACK TO TOP BUTTON -->
+  <button id="back-to-top" type="button" class="fixed bottom-6 right-6 z-40 p-3 rounded-2xl bg-nc-500 hover:bg-nc-600 text-white shadow-lg transition-all duration-300 opacity-0 pointer-events-none focus:outline-none" aria-label="Back to top">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+    </svg>
+  </button>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
