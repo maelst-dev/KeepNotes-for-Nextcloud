@@ -1,6 +1,8 @@
 package com.keepnc.data.auth
 
+import androidx.annotation.Keep
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -20,14 +22,16 @@ import javax.inject.Inject
  * [poll]  — polling info: keep POSTing to [poll.endpoint] with [poll.token]
  *            until credentials arrive.
  */
+@Keep
 data class LoginFlowInitResponse(
-    val poll: PollData,
-    val login: String
+    @SerializedName("poll") val poll: PollData = PollData(),
+    @SerializedName("login") val login: String = ""
 )
 
+@Keep
 data class PollData(
-    val token: String,
-    val endpoint: String
+    @SerializedName("token") val token: String = "",
+    @SerializedName("endpoint") val endpoint: String = ""
 )
 
 /**
@@ -36,10 +40,11 @@ data class PollData(
  * [loginName]   — username
  * [appPassword] — app-specific password (NOT the user's main password)
  */
+@Keep
 data class LoginFlowCredentialsResponse(
-    val server: String,
-    val loginName: String,
-    val appPassword: String
+    @SerializedName("server") val server: String = "",
+    @SerializedName("loginName") val loginName: String = "",
+    @SerializedName("appPassword") val appPassword: String = ""
 )
 
 // ---------------------------------------------------------------------------
