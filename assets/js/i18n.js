@@ -133,7 +133,7 @@ const translations = {
     faqA1: "Нет! KeepNotes спроектирован по парадигме Offline-First. Локальная база Room является единым источником правды. Вы можете читать, создавать и редактировать любые заметки без подключения к сети. Как только появится интернет, приложение автоматически выполнит быструю двустороннюю синхронизацию.",
 
     faqQ2: "Поддерживается ли тёмная тема оформления?",
-    faqA2: "Да. Приложение полностью поддерживает динамическую тему Material 3: вы можете выбрать автоматическую смену по системной теме Android или принудительно зафиксировать светлый или глубокий тёмный режим.",
+    faqA2: "Да. Приложение полностью поддерживает тёмную тему и концепцию Material Design 3, автоматически адаптируя интерфейс и цвета под системную тему вашего Android-устройства.",
 
     faqQ3: "Хранятся ли мои пароли и заметки на ваших серверах?",
     faqA3: "Категорически нет. У разработчиков приложения нет серверов для сбора данных. Приложение общается исключительно между вашим устройством и вашим сервером Nextcloud. Используется современный протокол Login Flow v2, при котором приложению передаётся только уникальный защищённый токен сессии.",
@@ -320,7 +320,7 @@ const translations = {
     faqA1: "No! KeepNotes is built with an Offline-First architecture. The local Room database acts as the single source of truth. You can view, create, and edit notes anytime without internet. Once connectivity is available, the app automatically performs bidirectional sync.",
 
     faqQ2: "Is dark theme supported?",
-    faqA2: "Yes. The app fully supports Material Design 3 dynamic theming: you can let it follow your system theme or explicitly lock it to light or dark mode.",
+    faqA2: "Yes. The app fully supports dark theme and Material Design 3 dynamic theming, automatically adapting its interface and colors to your Android system theme.",
 
     faqQ3: "Are my credentials or notes stored on your servers?",
     faqA3: "Definitely not. The developers do not operate any backend servers. All communication happens strictly between your smartphone and your personal Nextcloud instance. Nextcloud Login Flow v2 issues a secure session token without exposing your password.",
