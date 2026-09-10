@@ -162,9 +162,9 @@ const translations = {
     footerSourceCode: "Исходный код (GitHub)",
     footerReleases: "Релизы и сборки",
     footerIssues: "Сообщить об ошибке",
-    footerLicense: "Лицензия GPL-3.0",
+    footerLicense: "Лицензия Apache-2.0",
     footerDisclaimer: "Nextcloud является зарегистрированным товарным знаком Nextcloud GmbH. KeepNotes является независимым проектом с открытым исходным кодом и не аффилирован с Nextcloud GmbH.",
-    footerCopy: "KeepNotes for Nextcloud. Распространяется под свободной лицензией.",
+    footerCopy: "© 2026 KeepNotes for Nextcloud. Распространяется под свободной лицензией Apache 2.0.",
 
     // Privacy Page Specific
     privacyTitle: "Политика конфиденциальности KeepNotes for Nextcloud",
@@ -349,9 +349,9 @@ const translations = {
     footerSourceCode: "Source Code (GitHub)",
     footerReleases: "Releases & Binaries",
     footerIssues: "Report an Issue",
-    footerLicense: "GPL-3.0 License",
+    footerLicense: "Apache-2.0 License",
     footerDisclaimer: "Nextcloud is a registered trademark of Nextcloud GmbH. KeepNotes is an independent open-source project and is not affiliated with Nextcloud GmbH.",
-    footerCopy: "KeepNotes for Nextcloud. Released under the GPL-3.0 open source license.",
+    footerCopy: "© 2026 KeepNotes for Nextcloud. Released under the Apache-2.0 open source license.",
 
     // Privacy Page Specific
     privacyTitle: "KeepNotes for Nextcloud Privacy Policy",
