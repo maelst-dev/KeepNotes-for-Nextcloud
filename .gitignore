@@ -55,5 +55,6 @@ captures/
 .DS_Store
 Thumbs.db
 
-# Local AI agent documentation
+# Local AI agent documentation & workspace configs
 AGENTS.md
+.agents/
