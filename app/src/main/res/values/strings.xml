@@ -86,6 +86,12 @@
     <string name="settings_confirm_save_desc">Ask to save changes when exiting the editor. If disabled, changes are saved automatically.</string>
     <string name="settings_confirm_delete_title">Delete confirmation</string>
     <string name="settings_confirm_delete_desc">Ask for confirmation before deleting a note.</string>
+    <!-- Appearance -->
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_theme_title">App theme</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
     <string name="settings_editor_font_size_title">Editor font size</string>
     <string name="settings_card_font_size_title">Cards font size</string>
     <string name="font_size_small">Small</string>

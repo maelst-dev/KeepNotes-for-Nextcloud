@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.android.material.color.DynamicColors
+import com.keepnc.data.settings.AppTheme
+import com.keepnc.data.settings.SettingsStorage
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -23,9 +25,13 @@ class KeepNcApp : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
+    @Inject
+    lateinit var settingsStorage: SettingsStorage
+
     override fun onCreate() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
+        AppTheme.apply(settingsStorage.getAppTheme())
     }
 
     override val workManagerConfiguration: Configuration

@@ -108,6 +108,25 @@ class SettingsStorageTest {
         assertFalse(fakePrefs.getBoolean(SettingsStorage.KEY_APP_LOCK_ENABLED, true))
     }
 
+    @Test
+    fun `default value for appTheme is SYSTEM`() {
+        assertEquals(AppTheme.SYSTEM, storage.getAppTheme())
+        assertEquals(AppTheme.SYSTEM, storage.appTheme.value)
+    }
+
+    @Test
+    fun `setAppTheme updates preference and stateflow`() {
+        storage.setAppTheme(AppTheme.DARK)
+
+        assertEquals(AppTheme.DARK, storage.getAppTheme())
+        assertEquals(AppTheme.DARK, storage.appTheme.value)
+        assertEquals(AppTheme.DARK.key, fakePrefs.getString(SettingsStorage.KEY_APP_THEME, null))
+
+        storage.setAppTheme(AppTheme.LIGHT)
+        assertEquals(AppTheme.LIGHT, storage.getAppTheme())
+        assertEquals(AppTheme.LIGHT, storage.appTheme.value)
+    }
+
     private class FakeSharedPreferences : SharedPreferences {
         private val values = mutableMapOf<String, Any?>()
 

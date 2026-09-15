@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.keepnc.BuildConfig
 import com.keepnc.data.auth.TokenStorage
 import com.keepnc.data.settings.AppLanguage
+import com.keepnc.data.settings.AppTheme
 import com.keepnc.data.settings.FontSizePreset
 import com.keepnc.data.settings.SettingsStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +24,7 @@ class SettingsViewModel @Inject constructor(
 
     val confirmSaveOnExit: StateFlow<Boolean> = settingsStorage.confirmSaveOnExit
     val confirmDeleteNote: StateFlow<Boolean> = settingsStorage.confirmDeleteNote
+    val appTheme: StateFlow<AppTheme> = settingsStorage.appTheme
     val editorFontSize: StateFlow<FontSizePreset> = settingsStorage.editorFontSize
     val cardFontSize: StateFlow<FontSizePreset> = settingsStorage.cardFontSize
     val appLockEnabled: StateFlow<Boolean> = settingsStorage.appLockEnabled
@@ -39,6 +41,11 @@ class SettingsViewModel @Inject constructor(
 
     fun setConfirmDeleteNote(enabled: Boolean) {
         settingsStorage.setConfirmDeleteNote(enabled)
+    }
+
+    fun setAppTheme(theme: AppTheme) {
+        settingsStorage.setAppTheme(theme)
+        AppTheme.apply(theme)
     }
 
     fun setEditorFontSize(preset: FontSizePreset) {

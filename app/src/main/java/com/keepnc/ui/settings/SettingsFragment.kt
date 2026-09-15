@@ -13,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keepnc.R
 import com.keepnc.data.auth.BiometricAuthHelper
 import com.keepnc.data.settings.AppLanguage
+import com.keepnc.data.settings.AppTheme
 import com.keepnc.data.settings.FontSizePreset
 import com.keepnc.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +56,10 @@ class SettingsFragment : Fragment() {
 
         binding.rowConfirmDelete.setOnClickListener {
             viewModel.setConfirmDeleteNote(!binding.switchConfirmDelete.isChecked)
+        }
+
+        binding.rowAppTheme.setOnClickListener {
+            showThemeDialog()
         }
 
         binding.rowEditorFontSize.setOnClickListener {
@@ -111,6 +116,25 @@ class SettingsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showThemeDialog() {
+        val themes = AppTheme.entries.toTypedArray()
+        val items = themes.map { getString(it.labelRes) }.toTypedArray()
+        val current = viewModel.appTheme.value
+        val checkedItem = themes.indexOf(current).coerceAtLeast(0)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.settings_theme_title)
+            .setSingleChoiceItems(items, checkedItem) { dialog, which ->
+                val selected = themes[which]
+                if (selected != current) {
+                    viewModel.setAppTheme(selected)
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     private fun showFontSizeDialog(
@@ -171,6 +195,11 @@ class SettingsFragment : Fragment() {
                 launch {
                     viewModel.confirmDeleteNote.collect { isChecked ->
                         binding.switchConfirmDelete.isChecked = isChecked
+                    }
+                }
+                launch {
+                    viewModel.appTheme.collect { theme ->
+                        binding.tvAppThemeValue.text = getString(theme.labelRes)
                     }
                 }
                 launch {

@@ -86,6 +86,12 @@
     <string name="settings_confirm_save_desc">Запрашивать подтверждение при выходе из редактора. Если отключено, изменения сохраняются автоматически.</string>
     <string name="settings_confirm_delete_title">Подтверждение удаления</string>
     <string name="settings_confirm_delete_desc">Запрашивать подтверждение перед удалением заметки.</string>
+    <!-- Appearance -->
+    <string name="settings_section_appearance">Оформление</string>
+    <string name="settings_theme_title">Тема оформления</string>
+    <string name="theme_system">Системная (по умолчанию)</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
     <string name="settings_editor_font_size_title">Размер шрифта в редакторе</string>
     <string name="settings_card_font_size_title">Размер шрифта карточек</string>
     <string name="font_size_small">Маленький</string>

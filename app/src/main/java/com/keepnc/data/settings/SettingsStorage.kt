@@ -66,6 +66,12 @@ open class SettingsStorage {
     }
     open val appLockEnabled: StateFlow<Boolean> by lazy { _appLockEnabled.asStateFlow() }
 
+    private val _appTheme: MutableStateFlow<AppTheme> by lazy {
+        val key = prefs.getString(KEY_APP_THEME, AppTheme.DEFAULT.key)
+        MutableStateFlow(AppTheme.fromKey(key))
+    }
+    open val appTheme: StateFlow<AppTheme> by lazy { _appTheme.asStateFlow() }
+
     open fun isConfirmSaveOnExit(): Boolean =
         prefs.getBoolean(KEY_CONFIRM_SAVE_ON_EXIT, DEFAULT_CONFIRM_SAVE_ON_EXIT)
 
@@ -106,6 +112,14 @@ open class SettingsStorage {
         _appLockEnabled.value = enabled
     }
 
+    open fun getAppTheme(): AppTheme =
+        AppTheme.fromKey(prefs.getString(KEY_APP_THEME, AppTheme.DEFAULT.key))
+
+    open fun setAppTheme(theme: AppTheme) {
+        prefs.edit().putString(KEY_APP_THEME, theme.key).apply()
+        _appTheme.value = theme
+    }
+
     companion object {
         const val PREFS_NAME = "keepnc_user_settings"
         const val KEY_CONFIRM_SAVE_ON_EXIT = "confirm_save_on_exit"
@@ -113,6 +127,7 @@ open class SettingsStorage {
         const val KEY_EDITOR_FONT_SIZE = "editor_font_size"
         const val KEY_CARD_FONT_SIZE = "card_font_size"
         const val KEY_APP_LOCK_ENABLED = "app_lock_enabled"
+        const val KEY_APP_THEME = "app_theme"
         const val DEFAULT_CONFIRM_SAVE_ON_EXIT = true
         const val DEFAULT_CONFIRM_DELETE_NOTE = true
         const val DEFAULT_APP_LOCK_ENABLED = false
