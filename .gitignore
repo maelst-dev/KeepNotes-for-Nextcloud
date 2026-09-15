@@ -58,3 +58,5 @@ Thumbs.db
 # Local AI agent documentation & workspace configs
 AGENTS.md
 .agents/
+.gemini/
+mcp_config.json
