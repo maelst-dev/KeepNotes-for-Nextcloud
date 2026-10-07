@@ -1,0 +1,5 @@
+- Disable HTTP logging in release builds to protect credentials and note contents.
+- Redact Authorization header in debug logs.
+- Added Nextcloud trademark disclaimer.
+- Theme selection (Light, Dark, System default).
+- UI and stability improvements.

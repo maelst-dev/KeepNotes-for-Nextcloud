@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App & Auth -->
-    <string name="app_name">KeepNotes for Nextcloud</string>
-    <string name="login_title">KeepNotes for Nextcloud</string>
-    <string name="login_subtitle">Клиент Nextcloud Заметок</string>
+    <string name="app_name">KeepNotes</string>
+    <string name="app_full_name">KeepNotes для Nextcloud</string>
+    <string name="login_title">KeepNotes для Nextcloud</string>
+    <string name="login_subtitle">Клиент для Nextcloud Notes</string>
     <string name="login_server_url_hint">https://your.nextcloud.server</string>
     <string name="login_button">Войти через Nextcloud</string>
     <string name="login_waiting">Ожидание авторизации в браузере…</string>

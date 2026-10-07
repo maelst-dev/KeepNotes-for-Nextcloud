@@ -77,6 +77,10 @@
 
 Проект распространяется под свободной лицензией **Apache License 2.0**. Полный текст доступен в файле [LICENSE](LICENSE).
 
+### ⚖️ Отказ от ответственности
+
+KeepNotes является независимым приложением и не связано с Nextcloud GmbH, не спонсируется и не поддерживается им. Nextcloud является зарегистрированным товарным знаком Nextcloud GmbH.
+
 ---
 
 <a name="english"></a>
@@ -147,3 +151,7 @@ Built strictly without proprietary blobs or tracking libraries, free from Google
 ### 📄 License
 
 This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
+
+### ⚖️ Disclaimer
+
+KeepNotes is an independent application and is not affiliated with, sponsored, or endorsed by Nextcloud GmbH. Nextcloud is a registered trademark of Nextcloud GmbH.

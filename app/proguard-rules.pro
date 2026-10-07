@@ -21,6 +21,9 @@
 # OkHttp
 -dontwarn okhttp3.**
 -dontwarn okio.**
+-assumenosideeffects class okhttp3.logging.HttpLoggingInterceptor$Logger {
+    public void log(java.lang.String);
+}
 
 # Retrofit
 -keepattributes Signature

@@ -11,3 +11,6 @@ Features:
 • In-App Language Selection: Easily switch between English and Russian directly inside the app.
 • Organization & Navigation: Navigation Drawer with categories and note counts, Category Picker, Starred / Favorites filter, and fast search.
 • 100% Free & Open Source: No proprietary tracking, no analytics, no ads, no Google Play Services dependencies.
+
+Disclaimer:
+KeepNotes is an independent application and is not affiliated with, sponsored, or endorsed by Nextcloud GmbH. Nextcloud is a registered trademark of Nextcloud GmbH.

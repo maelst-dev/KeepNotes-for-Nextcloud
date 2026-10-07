@@ -3,6 +3,7 @@ package com.keepnc.di
 import android.content.Context
 import androidx.work.WorkManager
 import com.google.gson.Gson
+import com.keepnc.BuildConfig
 import com.keepnc.data.auth.TokenStorage
 import com.keepnc.data.local.AppDatabase
 import com.keepnc.data.local.NoteDao
@@ -54,7 +55,11 @@ object AppModule {
             .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
+                    level = if (BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor.Level.BASIC
+                    } else {
+                        HttpLoggingInterceptor.Level.NONE
+                    }
                 }
             )
             .build()
@@ -69,8 +74,12 @@ object AppModule {
             .addInterceptor(authInterceptor)
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                    // BODY-level logging in all builds for now; disable in release for production
-                    level = HttpLoggingInterceptor.Level.BODY
+                    level = if (BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor.Level.BODY
+                    } else {
+                        HttpLoggingInterceptor.Level.NONE
+                    }
+                    redactHeader("Authorization")
                 }
             )
             .build()
