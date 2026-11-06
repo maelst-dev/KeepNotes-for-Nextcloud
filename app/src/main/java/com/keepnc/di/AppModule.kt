@@ -94,7 +94,7 @@ object AppModule {
         // Build the Notes API base URL from stored server URL, or use a placeholder.
         // See the TODO above for a proper fix.
         val baseUrl = tokenStorage.getServerUrl()
-            ?.trimEnd('/')
+            ?.let { com.keepnc.data.remote.ServerUrlUtils.normalizeServerUrl(it) }
             ?.let { "$it/index.php/apps/notes/api/v1/" }
             ?: "https://placeholder.invalid/index.php/apps/notes/api/v1/"
 

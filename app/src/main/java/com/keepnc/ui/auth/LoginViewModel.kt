@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.keepnc.data.auth.Credentials
 import com.keepnc.data.auth.LoginFlowService
 import com.keepnc.data.auth.TokenStorage
+import com.keepnc.data.remote.ServerUrlUtils
 import com.keepnc.data.repository.NotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +46,7 @@ class LoginViewModel @Inject constructor(
      */
     fun startLoginFlow(rawUrl: String) {
         // Basic client-side validation before hitting the network
-        val serverUrl = rawUrl.trim().trimEnd('/')
+        val serverUrl = ServerUrlUtils.normalizeServerUrl(rawUrl)
         if (serverUrl.isBlank()) {
             _loginState.value = LoginState.Error(messageRes = com.keepnc.R.string.login_error_empty_url)
             return
@@ -62,20 +63,26 @@ class LoginViewModel @Inject constructor(
                 // Step 1: Ask the server to start the flow
                 val flowResponse = loginFlowService.initiateLoginFlow(serverUrl)
 
+                // Reconcile browser login URL and poll endpoint with serverUrl to preserve subpath & HTTPS scheme
+                val reconciledLoginUrl = ServerUrlUtils.reconcileUrl(serverUrl, flowResponse.login)
+                val reconciledPollEndpoint = ServerUrlUtils.reconcileUrl(serverUrl, flowResponse.poll.endpoint)
+
                 // Step 2: Tell the Activity to open the browser
                 // (the Activity opens the URL; we start polling immediately)
-                _loginState.value = LoginState.BrowserOpened(flowResponse.login)
+                _loginState.value = LoginState.BrowserOpened(reconciledLoginUrl)
 
                 // Step 3: Poll until credentials arrive (or timeout after 5 minutes)
                 val creds = loginFlowService.pollForCredentials(
-                    endpoint = flowResponse.poll.endpoint,
+                    endpoint = reconciledPollEndpoint,
                     token = flowResponse.poll.token
                 )
 
                 // Step 4: Persist credentials securely
+                // Reconcile creds.server with serverUrl to avoid losing subpath on instances behind reverse proxies
+                val finalServerUrl = ServerUrlUtils.reconcileUrl(serverUrl, creds.server)
                 tokenStorage.saveCredentials(
                     Credentials(
-                        serverUrl = creds.server.trimEnd('/'),
+                        serverUrl = finalServerUrl,
                         loginName = creds.loginName,
                         appPassword = creds.appPassword
                     )

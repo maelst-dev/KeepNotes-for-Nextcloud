@@ -77,7 +77,8 @@ class LoginFlowService(
      */
     suspend fun initiateLoginFlow(serverUrl: String): LoginFlowInitResponse =
         withContext(Dispatchers.IO) {
-            val url = "$serverUrl/index.php/login/v2"
+            val cleanUrl = com.keepnc.data.remote.ServerUrlUtils.normalizeServerUrl(serverUrl)
+            val url = "$cleanUrl/index.php/login/v2"
             // POST with empty body — the server only needs the endpoint hit
             val request = Request.Builder()
                 .url(url)

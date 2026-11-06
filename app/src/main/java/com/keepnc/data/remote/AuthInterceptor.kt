@@ -38,8 +38,9 @@ class AuthInterceptor @Inject constructor(
         }
 
         // Dynamic server URL resolution
-        val serverUrl = tokenStorage.getServerUrl()?.trim()?.trimEnd('/')
-        if (!serverUrl.isNullOrBlank()) {
+        val rawServerUrl = tokenStorage.getServerUrl()
+        if (!rawServerUrl.isNullOrBlank()) {
+            val serverUrl = ServerUrlUtils.normalizeServerUrl(rawServerUrl)
             val targetBaseUrl = "$serverUrl/index.php/apps/notes/api/v1/".toHttpUrlOrNull()
             if (targetBaseUrl != null) {
                 val originalUrl = originalRequest.url
@@ -52,8 +53,13 @@ class AuthInterceptor @Inject constructor(
                         originalUrl.pathSegments.size
                     )
                 } else if (v1Index == -1) {
-                    // Fallback if placeholder URL had no prefix — all segments are relative to baseUrl
-                    originalUrl.pathSegments.filter { it.isNotBlank() }
+                    // Fallback if URL had no v1 prefix — extract relative endpoint segments
+                    val notesIndex = originalUrl.pathSegments.indexOf("notes")
+                    if (notesIndex != -1) {
+                        originalUrl.pathSegments.subList(notesIndex, originalUrl.pathSegments.size)
+                    } else {
+                        originalUrl.pathSegments.filter { it.isNotBlank() }
+                    }
                 } else {
                     emptyList()
                 }
@@ -61,7 +67,7 @@ class AuthInterceptor @Inject constructor(
                 for (segment in relativeSegments) {
                     newUrlBuilder.addPathSegment(segment)
                 }
-                originalUrl.query?.let { newUrlBuilder.query(it) }
+                originalUrl.encodedQuery?.let { newUrlBuilder.encodedQuery(it) }
                 requestBuilder.url(newUrlBuilder.build())
             }
         }
