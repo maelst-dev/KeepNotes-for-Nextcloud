@@ -1,0 +1,3 @@
+- Added Material You monochrome themed adaptive icon for Android 13+.
+- Fixed login flow and API routing for Nextcloud servers installed in subfolders.
+- UI and stability improvements.
