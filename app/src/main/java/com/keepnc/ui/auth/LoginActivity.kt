@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
+import com.keepnc.R
 import com.keepnc.databinding.ActivityLoginBinding
 import com.keepnc.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,24 +23,20 @@ import kotlinx.coroutines.launch
  * If the user is already logged in, skip straight to [MainActivity].
  * Otherwise, show a server URL field and launch Login Flow v2 in a Custom Tab.
  *
- * Login Flow v2 steps (from this Activity's perspective):
- * 1. User types server URL and taps "Login"
- * 2. ViewModel calls LoginFlowService → gets a browser URL
- * 3. We open that URL in a Custom Chrome Tab (system browser, branded)
- * 4. The user authenticates in the browser
- * 5. ViewModel polls for credentials in the background
- * 6. On success → start MainActivity
- *
- * BEGINNER NOTE: We use `repeatOnLifecycle(Lifecycle.State.STARTED)` to collect
- * StateFlow safely — this automatically pauses collection when the activity is
- * in the background and resumes when it comes back. This prevents processing
- * UI updates while the screen is invisible.
+ * Features:
+ * - Active background polling that survives temporary network drop or app hiding
+ * - Instant poll wake-up on [onResume] when returning from the browser
+ * - Nextcloud deep link handling (`nc://login/...`)
+ * - Manual fallback buttons (Check authorization, Reopen browser, Cancel)
  */
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
+
+    /** Tracks the last opened URL to prevent re-opening Custom Tabs on every lifecycle resume. */
+    private var lastLaunchedLoginUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,12 +52,47 @@ class LoginActivity : AppCompatActivity() {
 
         setupClickListeners()
         observeLoginState()
+
+        handleDeepLinkIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleDeepLinkIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onActivityResumed()
+    }
+
+    private fun handleDeepLinkIntent(intent: Intent?) {
+        val dataString = intent?.dataString
+        if (!dataString.isNullOrBlank() && dataString.startsWith("nc://login", ignoreCase = true)) {
+            viewModel.handleDeepLink(dataString)
+        }
     }
 
     private fun setupClickListeners() {
         binding.btnLogin.setOnClickListener {
             val url = binding.etServerUrl.text?.toString()?.trim() ?: ""
             viewModel.startLoginFlow(url)
+        }
+
+        binding.btnCheckAuth.setOnClickListener {
+            viewModel.checkAuthorizationNow()
+        }
+
+        binding.btnReopenBrowser.setOnClickListener {
+            lastLaunchedLoginUrl?.let { url ->
+                openInCustomTab(url)
+            }
+        }
+
+        binding.btnCancelLogin.setOnClickListener {
+            lastLaunchedLoginUrl = null
+            viewModel.cancelLoginFlow()
         }
     }
 
@@ -75,41 +107,51 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginState(state: LoginState) {
-        // Reset visible state
+        // Reset visibility to base defaults
         binding.progressBar.visibility = View.GONE
         binding.tvStatus.visibility = View.GONE
+        binding.layoutWaitingActions.visibility = View.GONE
+        binding.tilServerUrl.isEnabled = true
+        binding.btnLogin.visibility = View.VISIBLE
         binding.btnLogin.isEnabled = true
 
         when (state) {
-            is LoginState.Idle -> Unit // nothing to do
+            is LoginState.Idle -> {
+                lastLaunchedLoginUrl = null
+            }
 
             is LoginState.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
+                binding.tilServerUrl.isEnabled = false
                 binding.btnLogin.isEnabled = false
             }
 
-            is LoginState.BrowserOpened -> {
-                // Show polling status message
+            is LoginState.WaitingForAuthorization -> {
                 binding.tvStatus.visibility = View.VISIBLE
-                binding.tvStatus.text = getString(com.keepnc.R.string.login_waiting)
+                binding.tvStatus.text = getString(R.string.login_waiting)
                 binding.progressBar.visibility = View.VISIBLE
-                binding.btnLogin.isEnabled = false
+                binding.layoutWaitingActions.visibility = View.VISIBLE
+                binding.tilServerUrl.isEnabled = false
+                binding.btnLogin.visibility = View.GONE
 
-                // Open the Nextcloud authorization page in a Custom Tab.
-                // Custom Tabs use the system browser with a branded toolbar —
-                // safer than WebView (user can see the URL) and better UX than external browser.
-                openInCustomTab(state.loginUrl)
+                // Only launch Custom Tab once per URL to avoid re-opening on every resume
+                if (lastLaunchedLoginUrl != state.loginUrl) {
+                    lastLaunchedLoginUrl = state.loginUrl
+                    openInCustomTab(state.loginUrl)
+                }
             }
 
             is LoginState.Success -> {
+                lastLaunchedLoginUrl = null
                 startMainActivity()
             }
 
             is LoginState.Error -> {
+                lastLaunchedLoginUrl = null
                 val text = if (state.messageRes != null) {
                     getString(state.messageRes)
                 } else {
-                    state.message ?: getString(com.keepnc.R.string.error_generic)
+                    state.message ?: getString(R.string.error_generic)
                 }
                 Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
             }
@@ -125,6 +167,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
-        finish() // remove LoginActivity from the back stack
+        finish()
     }
 }

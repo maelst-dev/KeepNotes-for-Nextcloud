@@ -3,12 +3,18 @@ package com.keepnc.data.auth
 import androidx.annotation.Keep
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
 import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
@@ -65,7 +71,7 @@ data class LoginFlowCredentialsResponse(
  *
  * Reference: https://docs.nextcloud.com/server/latest/developer_manual/client_apis/LoginFlow/index.html
  */
-class LoginFlowService(
+open class LoginFlowService(
     private val httpClient: OkHttpClient,
     private val gson: Gson
 ) {
@@ -75,7 +81,7 @@ class LoginFlowService(
      * POSTs to the server and returns the browser URL + polling data.
      * Throws an exception if the server is unreachable or returns an error.
      */
-    suspend fun initiateLoginFlow(serverUrl: String): LoginFlowInitResponse =
+    open suspend fun initiateLoginFlow(serverUrl: String): LoginFlowInitResponse =
         withContext(Dispatchers.IO) {
             val cleanUrl = com.keepnc.data.remote.ServerUrlUtils.normalizeServerUrl(serverUrl)
             val url = "$cleanUrl/index.php/login/v2"
@@ -99,24 +105,30 @@ class LoginFlowService(
      * Step 3: Poll for credentials.
      *
      * Keeps POSTing to [endpoint] with the [token] in the form body.
-     * - 200 → credentials ready, parse and return
-     * - 404 → user hasn't approved yet, wait 2 seconds and retry
+     * - 200 → credentials ready, validate and return
+     * - 404 → user hasn't approved yet, wait [pollIntervalMs] and retry
+     * - 429 → rate limited, backoff for 5s and retry
+     * - 5xx → temporary gateway/server hiccup, backoff for 3s and retry
+     * - [IOException] → network dropped or background app network throttled (GrapheneOS/AOSP), retry without aborting
+     * - [pollTriggerChannel] → optional signal to immediately wake up and query without waiting
      * - 5-minute timeout → throw [TimeoutException]
-     *
-     * BEGINNER NOTE: This is a suspending function — the `delay(2000)` does NOT
-     * block any thread. The coroutine is simply paused and resumed after 2 seconds.
      */
-    suspend fun pollForCredentials(endpoint: String, token: String): LoginFlowCredentialsResponse {
+    open suspend fun pollForCredentials(
+        endpoint: String,
+        token: String,
+        pollTriggerChannel: Channel<Unit>? = null,
+        timeoutMs: Long = 5 * 60 * 1000L,
+        pollIntervalMs: Long = 2000L
+    ): LoginFlowCredentialsResponse {
         val formBody = FormBody.Builder()
             .add("token", token)
             .build()
 
-        val timeoutMs = 5 * 60 * 1000L // 5 minutes
         val startTime = System.currentTimeMillis()
 
-        while (true) {
+        while (currentCoroutineContext().isActive) {
             if (System.currentTimeMillis() - startTime > timeoutMs) {
-                throw TimeoutException("Login timed out after 5 minutes")
+                throw TimeoutException("Login timed out after ${timeoutMs / 1000} seconds")
             }
 
             val request = Request.Builder()
@@ -124,25 +136,72 @@ class LoginFlowService(
                 .post(formBody)
                 .build()
 
-            // Each HTTP call is blocking — switch to IO for the duration of execute()
-            val (code, body) = withContext(Dispatchers.IO) {
-                httpClient.newCall(request).execute().use { response ->
-                    response.code to response.body?.string()
+            var code: Int? = null
+            var body: String? = null
+            var networkException: IOException? = null
+
+            try {
+                // Each HTTP call is blocking — switch to IO for the duration of execute()
+                withContext(Dispatchers.IO) {
+                    httpClient.newCall(request).execute().use { response ->
+                        code = response.code
+                        body = response.body?.string()
+                    }
                 }
+            } catch (e: IOException) {
+                networkException = e
             }
 
             when {
-                code == 200 && body != null -> {
-                    return gson.fromJson(body, LoginFlowCredentialsResponse::class.java)
+                networkException != null -> {
+                    // Do not abort loop on temporary network loss. Wait and retry.
+                    waitForNextPoll(pollTriggerChannel, pollIntervalMs)
+                }
+                code == 200 && !body.isNullOrBlank() -> {
+                    val creds = try {
+                        gson.fromJson(body, LoginFlowCredentialsResponse::class.java)
+                    } catch (e: Exception) {
+                        null
+                    }
+                    if (creds != null && creds.loginName.isNotBlank() && creds.appPassword.isNotBlank()) {
+                        return creds
+                    } else {
+                        // Received 200 but payload is not yet full credentials; wait and retry
+                        waitForNextPoll(pollTriggerChannel, pollIntervalMs)
+                    }
                 }
                 code == 404 -> {
-                    // User hasn't approved yet — suspend (not block) for 2 seconds
-                    delay(2000)
+                    // User hasn't approved yet — wait interval and retry
+                    waitForNextPoll(pollTriggerChannel, pollIntervalMs)
+                }
+                code == 429 -> {
+                    // Rate limited: backoff for 5s
+                    waitForNextPoll(pollTriggerChannel, 5000L)
+                }
+                code != null && code in 500..599 -> {
+                    // Gateway or server temporary hiccup: retry after 3s
+                    waitForNextPoll(pollTriggerChannel, 3000L)
                 }
                 else -> {
                     throw IllegalStateException("Unexpected poll response: $code")
                 }
             }
+        }
+
+        throw CancellationException("Polling cancelled")
+    }
+
+    private suspend fun waitForNextPoll(
+        trigger: Channel<Unit>?,
+        delayMs: Long
+    ) {
+        if (trigger != null) {
+            // Wait up to delayMs, or resume immediately if trigger was signaled
+            withTimeoutOrNull(delayMs) {
+                trigger.receive()
+            }
+        } else {
+            delay(delayMs)
         }
     }
 }

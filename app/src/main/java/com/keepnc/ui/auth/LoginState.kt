@@ -16,7 +16,7 @@ sealed class LoginState {
      * The server responded. The browser has been opened at [loginUrl].
      * We are now polling in the background waiting for the user to authorize.
      */
-    data class BrowserOpened(val loginUrl: String) : LoginState()
+    data class WaitingForAuthorization(val loginUrl: String) : LoginState()
 
     /** Credentials received and saved. Navigate to main screen. */
     object Success : LoginState()
