@@ -45,7 +45,11 @@ object AppModule {
     @Singleton
     fun provideGson(): Gson = Gson()
 
-    /** Unauthenticated OkHttpClient — used by LoginFlowService, which runs before credentials exist. */
+    /**
+     * Unauthenticated OkHttpClient — used by LoginFlowService, which runs before credentials exist.
+     * Note: Relies on Android's default platform TrustManager, which honors
+     * network_security_config.xml (system + user-installed CAs for self-signed certificates).
+     */
     @Provides
     @Singleton
     @Named("unauthenticated")
@@ -64,7 +68,11 @@ object AppModule {
             )
             .build()
 
-    /** Authenticated OkHttpClient — used by Retrofit to call Notes API. */
+    /**
+     * Authenticated OkHttpClient — used by Retrofit to call Notes API.
+     * Note: Relies on Android's default platform TrustManager, which honors
+     * network_security_config.xml (system + user-installed CAs for self-signed certificates).
+     */
     @Provides
     @Singleton
     fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
