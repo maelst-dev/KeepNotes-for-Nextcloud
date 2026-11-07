@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Adaptive launcher icon background — Nextcloud brand blue -->
+<!-- Adaptive launcher icon background — Nextcloud brand blue vertical gradient -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/nextcloud_blue" />
+    <gradient
+        android:angle="270"
+        android:startColor="#34ACFC"
+        android:centerColor="#1C8FE2"
+        android:endColor="#0873CC" />
 </shape>
