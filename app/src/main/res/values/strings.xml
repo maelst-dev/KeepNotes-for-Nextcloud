@@ -11,6 +11,7 @@
     <string name="login_error_empty_url">Please enter your server URL</string>
     <string name="login_error_invalid_url">Please enter a valid URL starting with https://</string>
     <string name="login_error_timeout">Login timed out. Please try again.</string>
+    <string name="login_error_save_credentials">Failed to securely save credentials on device</string>
     <string name="login_check_now">Check authorization</string>
     <string name="login_reopen_browser">Open browser again</string>
 

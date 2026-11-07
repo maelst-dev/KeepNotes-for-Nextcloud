@@ -11,6 +11,7 @@
     <string name="login_error_empty_url">Пожалуйста, введите адрес сервера</string>
     <string name="login_error_invalid_url">Адрес должен начинаться с https://</string>
     <string name="login_error_timeout">Время ожидания авторизации истекло. Попробуйте снова.</string>
+    <string name="login_error_save_credentials">Не удалось безопасно сохранить данные для входа на устройстве</string>
     <string name="login_check_now">Проверить авторизацию</string>
     <string name="login_reopen_browser">Открыть браузер снова</string>
 

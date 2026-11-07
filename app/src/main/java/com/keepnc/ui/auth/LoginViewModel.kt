@@ -145,13 +145,18 @@ class LoginViewModel @Inject constructor(
     ) {
         // Reconcile server URLs to prevent subpath loss behind reverse proxies
         val finalServerUrl = ServerUrlUtils.reconcileUrl(trustedServerUrl, returnedServerUrl)
-        tokenStorage.saveCredentials(
+        val saved = tokenStorage.saveCredentials(
             Credentials(
                 serverUrl = finalServerUrl,
                 loginName = loginName,
                 appPassword = appPassword
             )
         )
+        if (!saved) {
+            clearPollingState()
+            _loginState.value = LoginState.Error(messageRes = com.keepnc.R.string.login_error_save_credentials)
+            return
+        }
 
         // Clean slate for the new session before initial sync
         repository.clearAllLocalNotes()
@@ -198,12 +203,19 @@ class LoginViewModel @Inject constructor(
         loginFlowJob?.cancel()
         pollingJob?.cancel()
         viewModelScope.launch {
-            completeLogin(
-                trustedServerUrl = trustedUrl,
-                returnedServerUrl = creds.serverUrl,
-                loginName = creds.loginName,
-                appPassword = creds.appPassword
-            )
+            try {
+                completeLogin(
+                    trustedServerUrl = trustedUrl,
+                    returnedServerUrl = creds.serverUrl,
+                    loginName = creds.loginName,
+                    appPassword = creds.appPassword
+                )
+            } catch (e: CancellationException) {
+                // Expected when job cancelled
+            } catch (e: Exception) {
+                clearPollingState()
+                _loginState.value = LoginState.Error(message = e.message)
+            }
         }
         return true
     }

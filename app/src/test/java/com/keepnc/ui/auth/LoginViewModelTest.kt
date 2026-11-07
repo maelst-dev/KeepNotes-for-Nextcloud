@@ -64,11 +64,19 @@ class LoginViewModelTest {
 
     private class FakeTokenStorage : TokenStorage() {
         var savedCredentials: Credentials? = null
-        override fun saveCredentials(credentials: Credentials) { savedCredentials = credentials }
+        var shouldFailSave: Boolean = false
+        override fun saveCredentials(credentials: Credentials): Boolean {
+            if (shouldFailSave) return false
+            savedCredentials = credentials
+            return true
+        }
         override fun getCredentials(): Credentials? = savedCredentials
         override fun getServerUrl(): String? = savedCredentials?.serverUrl
         override fun isLoggedIn(): Boolean = savedCredentials != null
-        override fun clearCredentials() { savedCredentials = null }
+        override fun clearCredentials(): Boolean {
+            savedCredentials = null
+            return true
+        }
     }
 
     private class FakeLoginFlowService(
@@ -206,6 +214,21 @@ class LoginViewModelTest {
         assertTrue(fakeService.pollCalled)
         assertEquals(LoginState.Success, viewModel.loginState.value)
         assertEquals("john_doe", fakeTokenStorage.savedCredentials?.loginName)
+    }
+
+    @Test
+    fun `when saveCredentials fails during login, loginState transitions to Error`() = runTest {
+        val fakeService = FakeLoginFlowService()
+        val viewModel = LoginViewModel(fakeService, fakeTokenStorage, repository, SavedStateHandle())
+        fakeTokenStorage.shouldFailSave = true
+
+        viewModel.startLoginFlow("https://cloud.example.com")
+        advanceUntilIdle()
+
+        assertTrue(viewModel.loginState.value is LoginState.Error)
+        val errorState = viewModel.loginState.value as LoginState.Error
+        assertEquals(R.string.login_error_save_credentials, errorState.messageRes)
+        assertFalse(viewModel.isLoggedIn())
     }
 
     private class FakeNoteDao : NoteDao {
