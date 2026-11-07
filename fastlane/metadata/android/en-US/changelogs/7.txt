@@ -1,0 +1,3 @@
+- Added Material You monochrome themed launcher icon for Android 13+ (Issue #5).
+- Faithfully vectorized authentic Nextcloud Notes launcher branding with adaptive icon support.
+- Optimized launcher icon scale and safe zone alignment across all launchers.
