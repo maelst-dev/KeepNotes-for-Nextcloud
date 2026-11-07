@@ -1,0 +1,4 @@
+- Added support for user-installed and self-signed CA certificates via Network Security Config (Issue #6).
+- Fixed Login Flow v2 hanging after browser authorization with deep link callback and resilient polling (Issue #3).
+- Fixed login loop on Android 12 with automatic Keystore recovery and synchronous credential commit (Issue #2).
+- Stability and security improvements.
