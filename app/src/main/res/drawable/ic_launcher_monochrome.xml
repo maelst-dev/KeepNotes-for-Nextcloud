@@ -6,13 +6,13 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Масштабирование и центровка для оптимального заполнения площади иконки (scale 1.06) -->
+    <!-- Масштабирование и оптическая центровка под Android Adaptive Icon (Safe Zone 72dp: scale 0.78, translateY 4) -->
     <group
         android:pivotX="54"
         android:pivotY="54"
-        android:scaleX="1.06"
-        android:scaleY="1.06"
-        android:translateY="2">
+        android:scaleX="0.78"
+        android:scaleY="0.78"
+        android:translateY="4">
 
         <!-- Лист с вырезом под пин, строками и уголком -->
         <path
