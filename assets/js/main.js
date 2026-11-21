@@ -1,12 +1,14 @@
 /**
  * KeepNotes for Nextcloud - Main Application Logic
- * Theme, Language Switcher, Lightbox Gallery, FAQ Accordion, Mobile Menu
+ * Theme, Language Switcher (6 languages: RU, EN, ES, PT, FR, DE),
+ * Lightbox Gallery, FAQ Accordion, Mobile Menu
  */
 
 (function () {
   'use strict';
 
   // --- STATE ---
+  const supportedLangs = ['ru', 'en', 'es', 'pt', 'fr', 'de'];
   let currentLang = 'ru';
   let currentTheme = 'light';
   let activeLightboxIndex = 0;
@@ -68,16 +70,20 @@
   // --- I18N LOGIC ---
   function initLanguage() {
     const savedLang = localStorage.getItem('kn_lang');
-    if (savedLang && (savedLang === 'ru' || savedLang === 'en')) {
+    if (savedLang && supportedLangs.includes(savedLang)) {
       currentLang = savedLang;
     } else {
       const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-      currentLang = userLang.startsWith('ru') ? 'ru' : 'en';
+      const matched = supportedLangs.find(lang => userLang.startsWith(lang));
+      currentLang = matched || 'en';
     }
     applyLanguage(currentLang);
   }
 
   function applyLanguage(lang) {
+    if (!supportedLangs.includes(lang)) {
+      lang = 'en';
+    }
     currentLang = lang;
     document.documentElement.lang = lang;
     localStorage.setItem('kn_lang', lang);
@@ -129,15 +135,21 @@
       }
     });
 
-    // Update language switch button text/indicator
-    const langBtns = document.querySelectorAll('.lang-btn-text');
-    langBtns.forEach(btn => {
-      btn.textContent = lang === 'ru' ? 'EN' : 'RU';
+    // Update language button label indicators
+    document.querySelectorAll('.lang-current-label').forEach(ind => {
+      ind.textContent = lang.toUpperCase();
     });
 
-    const langActiveIndicators = document.querySelectorAll('.lang-current-label');
-    langActiveIndicators.forEach(ind => {
-      ind.textContent = lang.toUpperCase();
+    // Update active highlight in language dropdown / choice buttons
+    document.querySelectorAll('[data-lang-choice]').forEach(item => {
+      const choice = item.getAttribute('data-lang-choice');
+      const isSelected = choice === lang;
+      item.classList.toggle('bg-nc-50', isSelected);
+      item.classList.toggle('dark:bg-slate-700/80', isSelected);
+      item.classList.toggle('text-nc-600', isSelected);
+      item.classList.toggle('dark:text-nc-400', isSelected);
+      item.classList.toggle('font-bold', isSelected);
+      item.setAttribute('aria-selected', isSelected ? 'true' : 'false');
     });
 
     // CRITICAL: Update all screenshot images to current language folder
@@ -149,15 +161,21 @@
     }
   }
 
-  function toggleLanguage() {
-    const newLang = currentLang === 'ru' ? 'en' : 'ru';
-    applyLanguage(newLang);
+  function cycleLanguage() {
+    const nextIdx = (supportedLangs.indexOf(currentLang) + 1) % supportedLangs.length;
+    applyLanguage(supportedLangs[nextIdx]);
   }
 
   function updateScreenshotImages(lang) {
+    const fallbackLang = 'en';
+
     // Hero mockup screenshot
     const heroMockupImg = document.getElementById('hero-mockup-img');
     if (heroMockupImg) {
+      heroMockupImg.onerror = function () {
+        this.onerror = null;
+        this.src = `assets/images/screenshots/${fallbackLang}/01_Notes.png`;
+      };
       heroMockupImg.src = `assets/images/screenshots/${lang}/01_Notes.png`;
     }
 
@@ -165,8 +183,64 @@
     document.querySelectorAll('.gallery-screenshot-img').forEach(img => {
       const filename = img.getAttribute('data-filename');
       if (filename) {
+        img.onerror = function () {
+          this.onerror = null;
+          this.src = `assets/images/screenshots/${fallbackLang}/${filename}`;
+        };
         img.src = `assets/images/screenshots/${lang}/${filename}`;
       }
+    });
+  }
+
+  // --- LANGUAGE DROPDOWN CONTROLLER ---
+  function initLanguageDropdown() {
+    const containers = document.querySelectorAll('.lang-dropdown-container');
+    containers.forEach(container => {
+      const btn = container.querySelector('.lang-menu-btn');
+      const menu = container.querySelector('.lang-dropdown-menu');
+      if (!btn || !menu) return;
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !menu.classList.contains('hidden');
+        closeAllLangDropdowns();
+        if (!isOpen) {
+          menu.classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', () => {
+      closeAllLangDropdowns();
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllLangDropdowns();
+      }
+    });
+
+    // Language option click
+    document.querySelectorAll('[data-lang-choice]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const choice = btn.getAttribute('data-lang-choice');
+        if (choice) {
+          applyLanguage(choice);
+          closeAllLangDropdowns();
+        }
+      });
+    });
+  }
+
+  function closeAllLangDropdowns() {
+    document.querySelectorAll('.lang-dropdown-menu').forEach(menu => {
+      menu.classList.add('hidden');
+    });
+    document.querySelectorAll('.lang-menu-btn').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -198,9 +272,13 @@
   function renderLightboxSlide(index) {
     if (!lightboxModal || !window.I18N_DATA) return;
     const item = screenshotsData[index];
-    const dict = window.I18N_DATA[currentLang] || window.I18N_DATA.ru;
+    const dict = window.I18N_DATA[currentLang] || window.I18N_DATA.en || window.I18N_DATA.ru;
 
     if (lightboxImg) {
+      lightboxImg.onerror = function () {
+        this.onerror = null;
+        this.src = `assets/images/screenshots/en/${item.file}`;
+      };
       lightboxImg.src = `assets/images/screenshots/${currentLang}/${item.file}`;
       lightboxImg.alt = dict[item.titleKey] || 'Screenshot';
     }
@@ -326,9 +404,9 @@
       btn.addEventListener('click', toggleTheme);
     });
 
-    // Language toggle buttons
+    // Legacy or direct language toggle buttons
     document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', toggleLanguage);
+      btn.addEventListener('click', cycleLanguage);
     });
 
     // Gallery items trigger lightbox
@@ -389,6 +467,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initLanguage();
+    initLanguageDropdown();
     initFaq();
     initMobileMenu();
     initNavbarScroll();

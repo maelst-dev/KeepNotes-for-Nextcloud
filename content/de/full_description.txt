@@ -1,0 +1,16 @@
+KeepNotes for Nextcloud ist ein moderner Android-Client für Nextcloud Notes mit einer an Google Keep angelehnten Benutzeroberfläche (versetztes Kartenraster, dynamisches Material-3-Design, interaktive Checklisten, Kategorien und bidirektionale Offline-First-Synchronisation).
+
+Funktionen:
+• Von Google Keep inspirierte Oberfläche: Versetztes Kartenraster mit dynamischem Material-3-Design (Helles und Dunkles Design).
+• Nahtlose Authentifizierung: Unterstützung für Nextcloud Login Flow v2 (1-Klick-Anmeldung ohne manuelle App-Passwörter).
+• Robuste Offline-First-Architektur: Lokale Room-Datenbank als zentrale Datenquelle. Sofortige lokale Aktionen ohne Warten auf das Netzwerk.
+• Bidirektionale Synchronisation: Schnelle Serversynchronisation über etag und Zeitstempel, mit visueller Fortschrittsanzeige.
+• Erweitertes Markdown und interaktive Checklisten: Klickbare Kontrollkästchen mit Durchstreichung, intelligente Eingabetasten-Vervollständigung und schnelle Text-/Listen-Konvertierung.
+• Biometrische App-Sperre: Schütze deine Notizen mit Fingerabdruck, Gesichtserkennung oder Geräte-PIN / -Muster.
+• Anpassbare Schriftgrößen: Unabhängige Schriftgrößen für Karten und Editor (Klein, Mittel, Groß, Sehr groß).
+• In-App-Sprachauswahl: Einfaches Wechseln der Sprache direkt in den Einstellungen.
+• Organisation und Navigation: Navigationsmenü mit Kategorien und Zählern, Kategorieauswahl, Favoriten-Filter und schnelle Suche.
+• 100 % frei und Open Source: Keine proprietären Tracker, keine Analysen, werbefrei und ohne Abhängigkeiten von Google Play Services.
+
+Haftungsausschluss:
+KeepNotes ist eine unabhängige Anwendung und steht in keiner Verbindung zu Nextcloud GmbH, wird von dieser weder gesponsert noch unterstützt. Nextcloud ist eine eingetragene Marke der Nextcloud GmbH.

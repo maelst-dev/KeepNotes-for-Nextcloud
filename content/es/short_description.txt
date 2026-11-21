@@ -1,0 +1,1 @@
+Cliente de Nextcloud Notes con interfaz inspirada en Google Keep

@@ -47,13 +47,44 @@
             <span data-i18n="privacyBackToHome">← Вернуться на главную</span>
           </a>
 
-          <!-- Language Toggle Button -->
-          <button type="button" class="lang-toggle-btn inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Switch Language / Сменить язык" aria-label="Toggle language">
-            <svg class="w-3.5 h-3.5 text-nc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-            </svg>
-            <span class="lang-current-label text-slate-700 dark:text-slate-200">RU</span>
-          </button>
+          <!-- Language Dropdown -->
+          <div class="relative lang-dropdown-container">
+            <button type="button" class="lang-menu-btn inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Language / Язык / Idioma / Langue / Sprache" aria-label="Select language" aria-expanded="false" aria-haspopup="true">
+              <svg class="w-3.5 h-3.5 text-nc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+              <span class="lang-current-label text-slate-700 dark:text-slate-200">RU</span>
+              <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="lang-dropdown-menu hidden absolute right-0 mt-2 w-40 py-1.5 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-50 text-xs">
+              <button type="button" data-lang-choice="ru" class="lang-choice-item w-full px-3 py-1.5 text-left font-medium text-slate-700 dark:text-slate-200 hover:bg-nc-50 dark:hover:bg-slate-700/70 hover:text-nc-600 dark:hover:text-nc-400 flex items-center justify-between transition">
+                <span>Русский</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">RU</span>
+              </button>
+              <button type="button" data-lang-choice="en" class="lang-choice-item w-full px-3 py-1.5 text-left font-medium text-slate-700 dark:text-slate-200 hover:bg-nc-50 dark:hover:bg-slate-700/70 hover:text-nc-600 dark:hover:text-nc-400 flex items-center justify-between transition">
+                <span>English</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">EN</span>
+              </button>
+              <button type="button" data-lang-choice="es" class="lang-choice-item w-full px-3 py-1.5 text-left font-medium text-slate-700 dark:text-slate-200 hover:bg-nc-50 dark:hover:bg-slate-700/70 hover:text-nc-600 dark:hover:text-nc-400 flex items-center justify-between transition">
+                <span>Español</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">ES</span>
+              </button>
+              <button type="button" data-lang-choice="pt" class="lang-choice-item w-full px-3 py-1.5 text-left font-medium text-slate-700 dark:text-slate-200 hover:bg-nc-50 dark:hover:bg-slate-700/70 hover:text-nc-600 dark:hover:text-nc-400 flex items-center justify-between transition">
+                <span>Português</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">PT</span>
+              </button>
+              <button type="button" data-lang-choice="fr" class="lang-choice-item w-full px-3 py-1.5 text-left font-medium text-slate-700 dark:text-slate-200 hover:bg-nc-50 dark:hover:bg-slate-700/70 hover:text-nc-600 dark:hover:text-nc-400 flex items-center justify-between transition">
+                <span>Français</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">FR</span>
+              </button>
+              <button type="button" data-lang-choice="de" class="lang-choice-item w-full px-3 py-1.5 text-left font-medium text-slate-700 dark:text-slate-200 hover:bg-nc-50 dark:hover:bg-slate-700/70 hover:text-nc-600 dark:hover:text-nc-400 flex items-center justify-between transition">
+                <span>Deutsch</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400">DE</span>
+              </button>
+            </div>
+          </div>
 
           <!-- Theme Toggle Button -->
           <button type="button" class="theme-toggle-btn p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Toggle Theme" aria-label="Toggle theme">
