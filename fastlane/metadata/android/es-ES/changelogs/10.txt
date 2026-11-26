@@ -1,0 +1,2 @@
+- Añadido un botón Guardar en el modo de edición: aparece cuando hay cambios sin guardar y guarda la nota sin cerrar el editor.
+- Añadido el modo de selección múltiple en la lista de notas: una pulsación larga selecciona una nota y muestra Eliminar y Deseleccionar en la barra superior.

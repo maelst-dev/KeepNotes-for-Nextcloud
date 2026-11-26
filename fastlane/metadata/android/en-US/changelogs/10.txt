@@ -1,0 +1,2 @@
+- Added a Save button in edit mode that appears when there are unsaved changes and saves without closing the editor.
+- Added multi-select mode in the notes list: long-press selects a note and shows Delete and Clear selection buttons on the top bar.

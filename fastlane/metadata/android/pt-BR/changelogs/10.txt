@@ -1,0 +1,2 @@
+- Adicionado um botão Salvar no modo de edição: aparece quando há alterações não salvas e salva a nota sem fechar o editor.
+- Adicionado modo de seleção múltipla na lista de notas: toque longo seleciona uma nota e exibe Excluir e Limpar seleção na barra superior.

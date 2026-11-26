@@ -1,0 +1,2 @@
+- Schaltfläche „Speichern“ im Bearbeitungsmodus hinzugefügt: erscheint bei ungespeicherten Änderungen und speichert, ohne den Editor zu schließen.
+- Mehrfachauswahl in der Notizliste hinzugefügt: Langes Drücken wählt eine Notiz aus und zeigt Löschen und Auswahl aufheben in der oberen Leiste.

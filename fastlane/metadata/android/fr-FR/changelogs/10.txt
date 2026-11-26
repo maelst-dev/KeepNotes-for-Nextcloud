@@ -1,0 +1,2 @@
+- Ajout d'un bouton Enregistrer en mode édition : il apparaît lorsqu'il y a des modifications non enregistrées et sauvegarde sans fermer l'éditeur.
+- Ajout du mode sélection multiple dans la liste des notes : un appui long sélectionne une note et affiche Supprimer et Effacer la sélection dans la barre supérieure.
