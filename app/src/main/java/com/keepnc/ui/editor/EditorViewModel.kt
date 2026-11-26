@@ -47,6 +47,10 @@ class EditorViewModel @Inject constructor(
     /** Emits true when a previously unsaved draft was restored on editor open. */
     val hasRestoredDraft = MutableStateFlow(false)
 
+    private val _savedSnapshotVersion = MutableStateFlow(0)
+    /** Increments whenever an in-place save updates the baseline snapshot. */
+    val savedSnapshotVersion: StateFlow<Int> = _savedSnapshotVersion.asStateFlow()
+
     /** Live list of all distinct categories in the database. */
     val allCategories: StateFlow<List<String>> = repository.getCategories()
         .stateIn(
@@ -204,6 +208,7 @@ class EditorViewModel @Inject constructor(
                 draftStorage.clearDraft(currentId)
                 draftStorage.clearDraft(savedId)
                 draftStorage.clearDraft(null)
+                _savedSnapshotVersion.value += 1
 
                 repository.syncWithServer()
             } catch (e: Exception) {

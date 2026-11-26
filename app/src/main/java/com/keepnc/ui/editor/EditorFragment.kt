@@ -105,6 +105,7 @@ class EditorFragment : Fragment() {
         observeFavorite()
         observeDraftRestored()
         observeFieldsOnce()
+        setupChangeTracking()
         setupBackHandler()
         applyFontSize()
     }
@@ -120,7 +121,19 @@ class EditorFragment : Fragment() {
             }
 
             override fun onPrepareMenu(menu: Menu) {
-                menu.findItem(R.id.action_save)?.isVisible = !isPreviewMode
+                val showSave = if (!isPreviewMode && fieldsPopulated) {
+                    val currentTitle = binding.etTitle.text?.toString() ?: ""
+                    val currentContent = cleanEmptyTaskLines(binding.etContent.text?.toString() ?: "")
+                    viewModel.hasChanges(
+                        currentTitle = currentTitle,
+                        currentContent = currentContent,
+                        currentCategory = viewModel.category.value,
+                        currentFavorite = viewModel.isFavorite.value
+                    )
+                } else {
+                    false
+                }
+                menu.findItem(R.id.action_save)?.isVisible = showSave
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
@@ -169,6 +182,42 @@ class EditorFragment : Fragment() {
         // Track edits
         binding.etTitle.addTextChangedListener { editable ->
             updateTitle(editable?.toString())
+            if (fieldsPopulated && !isPreviewMode) {
+                requireActivity().invalidateOptionsMenu()
+            }
+        }
+    }
+
+    private fun setupChangeTracking() {
+        binding.etContent.addTextChangedListener {
+            if (fieldsPopulated && !isPreviewMode) {
+                requireActivity().invalidateOptionsMenu()
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.savedSnapshotVersion.collect {
+                        if (fieldsPopulated) {
+                            requireActivity().invalidateOptionsMenu()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.category.collect {
+                        if (fieldsPopulated && !isPreviewMode) {
+                            requireActivity().invalidateOptionsMenu()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.isFavorite.collect {
+                        if (fieldsPopulated && !isPreviewMode) {
+                            requireActivity().invalidateOptionsMenu()
+                        }
+                    }
+                }
+            }
         }
     }
 
