@@ -30,6 +30,9 @@ class NotesViewModel @Inject constructor(
     private val _filter = MutableStateFlow<NotesFilter>(NotesFilter.All)
     val currentFilter: StateFlow<NotesFilter> = _filter.asStateFlow()
 
+    private val _selectedNoteIds = MutableStateFlow<Set<Long>>(emptySet())
+    val selectedNoteIds: StateFlow<Set<Long>> = _selectedNoteIds.asStateFlow()
+
     val isSyncing: StateFlow<Boolean> = repository.isSyncing
 
     private val _syncError = MutableSharedFlow<String>()
@@ -59,13 +62,43 @@ class NotesViewModel @Inject constructor(
         )
 
     fun setFilter(filter: NotesFilter) {
-        _filter.value = filter
+        if (_filter.value != filter) {
+            _filter.value = filter
+            _selectedNoteIds.value = emptySet()
+        }
+    }
+
+    fun toggleSelection(noteId: Long) {
+        val current = _selectedNoteIds.value
+        _selectedNoteIds.value = if (noteId in current) {
+            current - noteId
+        } else {
+            current + noteId
+        }
+    }
+
+    fun clearSelection() {
+        if (_selectedNoteIds.value.isNotEmpty()) {
+            _selectedNoteIds.value = emptySet()
+        }
     }
 
     fun deleteNote(noteId: Long) {
         viewModelScope.launch {
             repository.deleteNote(noteId)
             // Trigger sync to push deletion to server
+            syncNotes()
+        }
+    }
+
+    fun deleteSelectedNotes() {
+        val idsToDelete = _selectedNoteIds.value.toList()
+        if (idsToDelete.isEmpty()) return
+        _selectedNoteIds.value = emptySet()
+        viewModelScope.launch {
+            idsToDelete.forEach { id ->
+                repository.deleteNote(id)
+            }
             syncNotes()
         }
     }

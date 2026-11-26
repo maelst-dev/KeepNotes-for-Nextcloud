@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import com.keepnc.R
 import com.keepnc.data.local.NoteEntity
 import com.keepnc.data.local.SyncStatus
@@ -32,6 +33,21 @@ class NoteCardAdapter(
     private val onNoteLongClick: (NoteEntity) -> Boolean,
     var cardFontSize: FontSizePreset = FontSizePreset.DEFAULT
 ) : ListAdapter<NoteEntity, NoteCardAdapter.NoteViewHolder>(DiffCallback) {
+
+    private var selectedIds: Set<Long> = emptySet()
+
+    fun updateSelection(newSelectedIds: Set<Long>) {
+        val oldIds = selectedIds
+        if (oldIds == newSelectedIds) return
+        selectedIds = newSelectedIds
+        currentList.forEachIndexed { index, note ->
+            val wasSelected = note.id in oldIds
+            val isSelected = note.id in newSelectedIds
+            if (wasSelected != isSelected) {
+                notifyItemChanged(index)
+            }
+        }
+    }
 
     // -----------------------------------------------------------------------
     // ViewHolder
@@ -97,6 +113,23 @@ class NoteCardAdapter(
                 if (note.syncStatus == SyncStatus.DIRTY ||
                     note.syncStatus == SyncStatus.PENDING_DELETE
                 ) View.VISIBLE else View.GONE
+
+            // Selection visual state
+            val card = binding.root
+            val density = card.resources.displayMetrics.density
+            if (note.id in selectedIds) {
+                card.strokeWidth = (2.5f * density).toInt()
+                card.strokeColor = MaterialColors.getColor(card, com.google.android.material.R.attr.colorPrimary)
+                card.setCardBackgroundColor(
+                    MaterialColors.getColor(card, com.google.android.material.R.attr.colorSecondaryContainer)
+                )
+            } else {
+                card.strokeWidth = (1f * density).toInt()
+                card.strokeColor = MaterialColors.getColor(card, com.google.android.material.R.attr.colorOutlineVariant)
+                card.setCardBackgroundColor(
+                    MaterialColors.getColor(card, com.google.android.material.R.attr.colorSurface)
+                )
+            }
 
             binding.root.setOnClickListener { onNoteClick(note) }
             binding.root.setOnLongClickListener { onNoteLongClick(note) }

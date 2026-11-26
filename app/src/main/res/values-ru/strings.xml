@@ -24,6 +24,7 @@
     <string name="notes_empty_favorites">Нет избранных заметок.</string>
     <string name="notes_search_hint">Поиск заметок…</string>
     <string name="notes_categories">Категории</string>
+    <string name="notes_selected_count">Выбрано: %1$d</string>
 
     <!-- Editor -->
     <string name="editor_title_label">Название заметки</string>
@@ -36,6 +37,7 @@
     <string name="editor_favorite">Избранное</string>
     <string name="editor_note_not_found">Заметка не найдена</string>
     <string name="editor_draft_restored">Восстановлен несохраненный черновик</string>
+    <string name="editor_note_saved">Заметка сохранена</string>
 
     <!-- Category Picker -->
     <string name="category_picker_title">Категория заметки</string>
@@ -49,12 +51,16 @@
     <string name="action_sync">Синхронизировать</string>
     <string name="action_save">Сохранить</string>
     <string name="action_discard">Сбросить</string>
+    <string name="action_clear_selection">Сбросить выбор</string>
+    <string name="action_delete_selected">Удалить выбранные</string>
     <string name="confirm">Удалить</string>
     <string name="cancel">Отмена</string>
 
     <!-- Dialogs -->
     <string name="delete_note_title">Удалить заметку?</string>
     <string name="delete_note_message">Эта заметка будет удалена навсегда.</string>
+    <string name="delete_notes_title">Удалить выбранные заметки?</string>
+    <string name="delete_notes_message">Выбранные заметки (%1$d) будут удалены навсегда.</string>
 
     <string name="save_changes_title">Сохранить изменения?</string>
     <string name="save_changes_message">В этой заметке есть несохранённые изменения.</string>

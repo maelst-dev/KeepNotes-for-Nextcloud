@@ -24,6 +24,7 @@
     <string name="notes_empty_favorites">No pinned notes yet.</string>
     <string name="notes_search_hint">Search notes…</string>
     <string name="notes_categories">Categories</string>
+    <string name="notes_selected_count">%1$d selected</string>
 
     <!-- Editor -->
     <string name="editor_title_label">Note title</string>
@@ -36,6 +37,7 @@
     <string name="editor_favorite">Favorite</string>
     <string name="editor_note_not_found">Note not found</string>
     <string name="editor_draft_restored">Restored unsaved draft</string>
+    <string name="editor_note_saved">Note saved</string>
 
     <!-- Category Picker -->
     <string name="category_picker_title">Note category</string>
@@ -49,12 +51,16 @@
     <string name="action_sync">Sync</string>
     <string name="action_save">Save</string>
     <string name="action_discard">Discard</string>
+    <string name="action_clear_selection">Clear selection</string>
+    <string name="action_delete_selected">Delete selected</string>
     <string name="confirm">Delete</string>
     <string name="cancel">Cancel</string>
 
     <!-- Dialogs -->
     <string name="delete_note_title">Delete note?</string>
     <string name="delete_note_message">This note will be deleted permanently.</string>
+    <string name="delete_notes_title">Delete selected notes?</string>
+    <string name="delete_notes_message">%1$d selected notes will be deleted permanently.</string>
 
     <string name="save_changes_title">Save changes?</string>
     <string name="save_changes_message">You have unsaved changes in this note.</string>

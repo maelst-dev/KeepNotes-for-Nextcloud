@@ -7,9 +7,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -55,6 +58,8 @@ class NotesFragment : Fragment() {
 
     // Tracks search input; we debounce it to avoid querying Room on every keystroke
     private val searchQuery = MutableStateFlow("")
+    private var wasInSelectionMode = false
+    private lateinit var selectionBackCallback: OnBackPressedCallback
 
     companion object {
         const val ARG_FILTER_TYPE = "filter_type"
@@ -89,7 +94,9 @@ class NotesFragment : Fragment() {
         setupFab()
         setupSwipeRefresh()
         applyArgumentFilter()
+        setupSelectionBackHandler()
         observeUiState()
+        observeSelectionState()
         observeSyncState()
         observeCardFontSize()
         setupSearchDebounce()
@@ -99,13 +106,17 @@ class NotesFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = NoteCardAdapter(
             onNoteClick = { note ->
-                findNavController().navigate(
-                    R.id.action_notesFragment_to_editorFragment,
-                    bundleOf("note_id" to note.id)
-                )
+                if (viewModel.selectedNoteIds.value.isNotEmpty()) {
+                    viewModel.toggleSelection(note.id)
+                } else {
+                    findNavController().navigate(
+                        R.id.action_notesFragment_to_editorFragment,
+                        bundleOf("note_id" to note.id)
+                    )
+                }
             },
             onNoteLongClick = { note ->
-                showDeleteDialog(note.id, note.title)
+                viewModel.toggleSelection(note.id)
                 true
             },
             cardFontSize = settingsStorage.getCardFontSize()
@@ -243,10 +254,30 @@ class NotesFragment : Fragment() {
                 }
             }
 
+            override fun onPrepareMenu(menu: Menu) {
+                val isSelectionMode = viewModel.selectedNoteIds.value.isNotEmpty()
+                val searchItem = menu.findItem(R.id.action_search)
+                if (isSelectionMode && searchItem?.isActionViewExpanded == true) {
+                    searchItem.collapseActionView()
+                }
+                searchItem?.isVisible = !isSelectionMode
+                menu.findItem(R.id.action_sync)?.isVisible = !isSelectionMode
+                menu.findItem(R.id.action_delete_selected)?.isVisible = isSelectionMode
+                menu.findItem(R.id.action_clear_selection)?.isVisible = isSelectionMode
+            }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_sync -> {
                         viewModel.syncNotes()
+                        true
+                    }
+                    R.id.action_delete_selected -> {
+                        confirmDeleteSelected()
+                        true
+                    }
+                    R.id.action_clear_selection -> {
+                        viewModel.clearSelection()
                         true
                     }
                     else -> false
@@ -255,18 +286,86 @@ class NotesFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun showDeleteDialog(noteId: Long, title: String) {
+    private fun setupSelectionBackHandler() {
+        selectionBackCallback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                viewModel.clearSelection()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            selectionBackCallback
+        )
+    }
+
+    private fun observeSelectionState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedNoteIds.collect { selectedIds ->
+                    val isSelectionMode = selectedIds.isNotEmpty()
+                    adapter.updateSelection(selectedIds)
+                    selectionBackCallback.isEnabled = isSelectionMode
+
+                    if (isSelectionMode) {
+                        binding.fab.hide()
+                        binding.swipeRefresh.isEnabled = false
+                    } else {
+                        binding.fab.show()
+                        binding.swipeRefresh.isEnabled = true
+                    }
+
+                    val activity = requireActivity() as? AppCompatActivity
+                    val drawerLayout = activity?.findViewById<DrawerLayout>(R.id.drawer_layout)
+                    drawerLayout?.setDrawerLockMode(
+                        if (isSelectionMode) DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+                        else DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
+
+                    if (isSelectionMode) {
+                        wasInSelectionMode = true
+                        activity?.supportActionBar?.title =
+                            getString(R.string.notes_selected_count, selectedIds.size)
+                    } else if (wasInSelectionMode) {
+                        wasInSelectionMode = false
+                        activity?.supportActionBar?.title = when (val filter = viewModel.currentFilter.value) {
+                            is NotesFilter.All -> getString(R.string.notes_all)
+                            is NotesFilter.Favorites -> getString(R.string.notes_favorites)
+                            is NotesFilter.ByCategory -> filter.category
+                            is NotesFilter.Search -> getString(R.string.notes_search_hint)
+                        }
+                    }
+
+                    requireActivity().invalidateOptionsMenu()
+                }
+            }
+        }
+    }
+
+    private fun confirmDeleteSelected() {
+        val count = viewModel.selectedNoteIds.value.size
+        if (count == 0) return
+
         if (settingsStorage.isConfirmDeleteNote()) {
+            val title = if (count == 1) {
+                getString(R.string.delete_note_title)
+            } else {
+                getString(R.string.delete_notes_title)
+            }
+            val message = if (count == 1) {
+                getString(R.string.delete_note_message)
+            } else {
+                getString(R.string.delete_notes_message, count)
+            }
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.delete_note_title)
-                .setMessage(R.string.delete_note_message)
+                .setTitle(title)
+                .setMessage(message)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.deleteNote(noteId)
+                    viewModel.deleteSelectedNotes()
                 }
                 .show()
         } else {
-            viewModel.deleteNote(noteId)
+            viewModel.deleteSelectedNotes()
         }
     }
 

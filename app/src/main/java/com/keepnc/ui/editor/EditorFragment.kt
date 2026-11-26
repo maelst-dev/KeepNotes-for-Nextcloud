@@ -119,14 +119,42 @@ class EditorFragment : Fragment() {
                 menuInflater.inflate(R.menu.toolbar_editor_menu, menu)
             }
 
+            override fun onPrepareMenu(menu: Menu) {
+                menu.findItem(R.id.action_save)?.isVisible = !isPreviewMode
+            }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean = when (menuItem.itemId) {
                 android.R.id.home -> {
                     handleExitAttempt()
                     true
                 }
+                R.id.action_save -> {
+                    saveInPlace()
+                    true
+                }
                 else -> false
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    /** Saves the note locally and triggers server sync without closing the editor. */
+    private fun saveInPlace() {
+        val currentTitle = binding.etTitle.text?.toString() ?: ""
+        val rawContent = binding.etContent.text?.toString() ?: ""
+        val currentContent = cleanEmptyTaskLines(rawContent)
+        if (currentContent != rawContent) {
+            binding.etContent.setText(currentContent)
+            binding.etContent.setSelection(currentContent.length)
+        }
+        val currentCategory = viewModel.category.value
+        val currentFavorite = viewModel.isFavorite.value
+
+        if (currentTitle.isBlank() && currentContent.isBlank()) {
+            return
+        }
+
+        viewModel.autoSave(currentTitle, currentContent, currentCategory, currentFavorite)
+        Snackbar.make(binding.root, R.string.editor_note_saved, Snackbar.LENGTH_SHORT).show()
     }
 
     /** Live-update the ActionBar title as the user types in et_title. */
